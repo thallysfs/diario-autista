@@ -1,0 +1,21 @@
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+
+import { AuthRoutes } from './auth.routes'
+import { AppRoutes } from './app.routes'
+
+//import { useAuth } from '../hooks/auth'
+
+
+export function Routes(){
+    //const { user } = useAuth();
+
+
+    return(
+        <NavigationContainer>
+            {/* condicional para saber se está autenticado */}
+            {/* {user.id ? <AppRoutes /> : <AuthRoutes />} */}
+            <AuthRoutes />
+        </NavigationContainer>
+    )
+} 

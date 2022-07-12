@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "373738302727",
+    "project_id": "diarioautista-f6ce6",
+    "storage_bucket": "diarioautista-f6ce6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373738302727:android:f3a305ca76e529dfd2e9a2",
+        "android_client_info": {
+          "package_name": "com.diarioautista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373738302727-out30715jvb1hdsu93sr6duk05uva17e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.diarioautista",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "373738302727-4en26e07808gtgdj21o90p93hhfl3tfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6S9xmZwBEk-A90ocUoIlIdCD_2KEfPCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373738302727-4en26e07808gtgdj21o90p93hhfl3tfd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

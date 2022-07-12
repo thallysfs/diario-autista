@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "diario-autista",
+    "slug": "diario-autista",
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#E0E9F1"
+    },
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
