@@ -7,7 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Toast } from '../../components/Toast' 
 
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore'
+import firestore, { firebase } from '@react-native-firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -157,35 +157,45 @@ export function Register(){
 
     })
 
-    //salvar dados do usuário
-    firestore()
-        .collection('users')
-        .add({
-          ageChild: formData.ageChild,
-          idUser: uid,
-          nameChild: formData.childName,
-          password: formData.password,
-          responsible: formData.responsible,
-          therapist: formData.therapist,
-          createdAt: firestore.FieldValue.serverTimestamp()
-    
-        })
-        .then(data =>{
-        //zerando os estados  
-        setFormData({
-          ageChild:'',
-          childName:'',
-          email:'',
-          password:'',
-          responsible:'',
-          therapist:''
-        });
-          console.log(data)
-          navigation.navigate('Confirm')
-        })
-        .catch((error)=> console.log(error))
 
+    Alert.alert('Udi', uid)
+    //verificando se criação de login e senha deu certo
+    if (uid != ''){
+      //convertendo a idade da criança para o formato do firebase
+      var formatedAgeChild = firebase.firestore.Timestamp.fromDate(new Date(formData.ageChild));
 
+      //salvar dados do usuário
+      firestore()
+      .collection('users')
+      .add({
+        ageChild: formatedAgeChild,
+        idUser: uid,
+        nameChild: formData.childName,
+        password: formData.password,
+        responsible: formData.responsible,
+        therapist: formData.therapist,
+        createdAt: firestore.FieldValue.serverTimestamp()
+
+      })
+      .then(data =>{
+      //zerando os estados  
+      setFormData({
+        ageChild:'',
+        childName:'',
+        email:'',
+        password:'',
+        responsible:'',
+        therapist:''
+      });
+      setUid('')
+        console.log(data)
+        navigation.navigate('Confirm')
+      })
+      .catch((error)=> console.log(error))
+
+    }else {
+      return false
+    }
   }
 
   return(
