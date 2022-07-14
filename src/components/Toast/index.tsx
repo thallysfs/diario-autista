@@ -1,12 +1,12 @@
 import React from 'react'
-import { useToast, VStack, HStack, Text,  Box, Icon} from "native-base";
+import { useToast, VStack, HStack, Text,  Box, Icon, } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface Props {
     title: string;
     description: string;
     colorBg: string;
-    iconName: string;
+    iconName: React.ComponentProps<typeof MaterialIcons>['name'];
 }
 
 export function Toast({description, title, colorBg, iconName}: Props){

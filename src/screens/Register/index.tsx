@@ -7,110 +7,80 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Toast } from '../../components/Toast' 
 
 import auth from '@react-native-firebase/auth';
-import firestore, { firebase } from '@react-native-firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
-interface UserData {
-  email: string;
-  password: string;
-  childName: string;
-  ageChild: string;
-  responsible: string;
-  therapist: string;
-
-}
 
 export function Register(){
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
   const [showPassword, setShow] = useState(false);
-  const [formData, setFormData] = useState<UserData>({} as UserData);
   const [errors, setErrors] = useState({});
-  const [uid, setUid] = useState('');
+
+  const navigation = useNavigation<any>();
 
   const toast = useToast();
-  const navigation = useNavigation<any>();
 
   function onSubmit() {
 
     //validar form
-    setErrors({
-      email:'',
-      password:'',
-      childName:'',
-      ageChild:'',
-      responsible: '',
-      therapist: ''
-    });
-    //Alert.alert('Erro', 'email ' + errors[0] + ' idade '+ formData.ageChild)
+    // setErrors({
+    //   email:'',
+    //   password:'',
+    //   confirmPassword: ''
+    // });
+    //Alert.alert('Erro', 'email ' + email + ' pass '+ password +' confirm '+confirmPassword)
 
     //Validar email
-    if (formData.email === undefined) {
-      setErrors({
+    if (email === '') {
+      setErrors({...errors,
          email: 'Email é obrigatório'
       });
       return false;
     }
-    else {
-      delete errors.email
-    }
 
-    if (formData.password === undefined) {
+    if (password === '') {
       setErrors({ ...errors,
         password: 'Senha é obrigatória'
       });
       return false;
     }
-    else {
-      delete errors.password
-    }
 
-    if (formData.childName === undefined) {
+    if (confirmPassword === '') {
       setErrors({ ...errors,
-        childName: 'Nome da criança é obrigatório'
+        confirmPassword: 'Senha é obrigatória'
       });
       return false;
     }
-    else {
-      delete errors.childName
-    }
 
-    if (formData.ageChild === undefined) {
-      setErrors({ ...errors,
-        ageChild: 'Data de nascimento é obrigatória'
+    if(password !== confirmPassword) {
+      toast.show({
+        placement: "top",
+        render: () => {
+          return <Toast 
+                    colorBg='error.400' 
+                    title='Senhas diferentes' 
+                    description='As senhas não são iguais'
+                    iconName='error'
+                  />
+        }
       });
       return false;
     }
-    else {
-      delete errors.ageChild
-    }
-
-    if (formData.responsible === undefined) {
-      setErrors({ ...errors,
-        responsible: 'Responsável da criança é obrigatório'
-      });
-      return false;
-    }
-    else {
-      delete errors.responsible
-    }
-
-    if (formData.therapist === undefined) {
-      setErrors({ ...errors,
-        therapist: 'Terapeuta é obrigatório(a)'
-      });
-      return false;
-    }
-    else {
-      delete errors.therapist
-    }
-
+    
     //criar acesso usuário
     auth()
-    .createUserWithEmailAndPassword(formData.email, formData.password)
+    .createUserWithEmailAndPassword(email, password)
     //.then(data => Alert.alert('Sucesso!', 'Usuário criado com sucesso'))
     .then( data =>{
       console.log(data.user.uid)
-      setUid(data.user.uid)
+    
+      //redirecionar
+      navigation.navigate('RegisterChild', {
+        idUser: data.user.uid
+      })
     })
     .catch(error => {
       console.log(error.code);
@@ -156,46 +126,6 @@ export function Register(){
       }
 
     })
-
-
-    Alert.alert('Udi', uid)
-    //verificando se criação de login e senha deu certo
-    if (uid != ''){
-      //convertendo a idade da criança para o formato do firebase
-      var formatedAgeChild = firebase.firestore.Timestamp.fromDate(new Date(formData.ageChild));
-
-      //salvar dados do usuário
-      firestore()
-      .collection('users')
-      .add({
-        ageChild: formatedAgeChild,
-        idUser: uid,
-        nameChild: formData.childName,
-        password: formData.password,
-        responsible: formData.responsible,
-        therapist: formData.therapist,
-        createdAt: firestore.FieldValue.serverTimestamp()
-
-      })
-      .then(data =>{
-      //zerando os estados  
-      setFormData({
-        ageChild:'',
-        childName:'',
-        email:'',
-        password:'',
-        responsible:'',
-        therapist:''
-      });
-      setUid('')
-        console.log(data)
-        navigation.navigate('Confirm')
-      })
-      .catch((error)=> console.log(error))
-
-    }else {
-      return false
-    }
   }
 
   return(
@@ -220,7 +150,7 @@ export function Register(){
             Cadastro
           </Text>
         </Box>        
-        <Box background="secondary.100" height="100%" paddingTop={5}> 
+        <Box background="secondary.100" height="100%" paddingTop={100}> 
           <Stack marginRight={6} marginLeft={5} space="5">
             <FormControl isRequired isInvalid={'email' in errors}>
               <Input 
@@ -229,11 +159,11 @@ export function Register(){
                 keyboardType='email-address' 
                 autoCorrect={false} 
                 bg='white'
-                onChangeText={ value => setFormData({...formData, email: value})}
-                value={formData.email}
+                onChangeText={setEmail}
+                value={email}
               />
               {
-                'email' in errors
+                email === ''
                 ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.email}</FormControl.ErrorMessage>
                 : <></>
               }              
@@ -246,68 +176,29 @@ export function Register(){
                 type={showPassword ? "text" : "password"}
                 InputRightElement={<Icon as={<MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} 
                 size={5} mr="2" color="muted.400" onPress={() => setShow(!showPassword)} />}
-                onChangeText={ value => setFormData({...formData, password: value})}
-                value={formData.password}
+                onChangeText={setPassword}
+                value={password}
               />
               {
-                'password' in errors 
+                password == ''
                 ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.password}</FormControl.ErrorMessage>
                 : <></>
               }              
             </FormControl>
-            <FormControl isRequired isInvalid={'childName' in errors}>
-              <Input 
-                variant="outline" 
-                placeholder="Nome da criança" 
+            <FormControl isRequired isInvalid={'password' in errors}>
+              <Input
                 bg='white'
-                onChangeText={ value => setFormData({...formData, childName: value})}
-                value={formData.childName}
+                variant="outline" 
+                placeholder="Senha" 
+                type={showPassword ? "text" : "password"}
+                InputRightElement={<Icon as={<MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />} 
+                size={5} mr="2" color="muted.400" onPress={() => setShow(!showPassword)} />}
+                onChangeText={setConfirmPassword}
+                value={confirmPassword}
               />
               {
-                'childName' in errors 
-                ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.childName}</FormControl.ErrorMessage>
-                : <></>
-              }              
-            </FormControl>
-            <FormControl isRequired isInvalid={'ageChild' in errors}>
-              <Input 
-                variant="outline" 
-                placeholder="Data nascimento da criança ex: 12/05/1999"  
-                bg='white'
-                onChangeText={ value => setFormData({...formData, ageChild: value})}
-                value={formData.ageChild}
-              />
-              {
-                'ageChild' in errors 
-                ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.ageChild}</FormControl.ErrorMessage>
-                : <></>
-              }              
-            </FormControl>
-            <FormControl isRequired isInvalid={'responsible' in errors}>
-              <Input 
-                variant="outline" 
-                placeholder="Nome do cuidador"  
-                bg='white'
-                onChangeText={ value => setFormData({...formData, responsible: value})}
-                value={formData.responsible}
-              />
-              {
-                'responsible' in errors 
-                ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.responsible}</FormControl.ErrorMessage>
-                : <></>
-              }              
-            </FormControl>
-            <FormControl isRequired isInvalid={'therapist' in errors}>
-              <Input 
-                variant="outline" 
-                placeholder="Terapeuta"
-                bg='white'
-                onChangeText={ value => setFormData({...formData, therapist: value})}
-                value={formData.therapist}
-              />
-              {
-                'therapist' in errors 
-                ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.therapist}</FormControl.ErrorMessage>
+                confirmPassword == ''
+                ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.confirmPassword}</FormControl.ErrorMessage>
                 : <></>
               }              
             </FormControl>

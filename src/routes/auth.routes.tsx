@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { FirstAccess } from '../screens/FirstAccess';
 import { Register } from '../screens/Register';
+import { RegisterChild } from '../screens/RegisterChild';
 import { Confirm } from '../screens/Confirm'
 
 
@@ -19,7 +20,11 @@ export function AuthRoutes(){
             <Screen
                 name="Register"
                 component={Register}
-            />            
+            />
+            <Screen
+                name="RegisterChild"
+                component={RegisterChild}
+            />              
             <Screen
                 name="Confirm"
                 component={Confirm}
