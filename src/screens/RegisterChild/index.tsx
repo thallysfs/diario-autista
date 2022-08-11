@@ -106,17 +106,17 @@ export function RegisterChild(){
 
       })
       .then(data =>{
-      //zerando os estados  
-      setFormData({
-          ageChild:'',
-          childName:'',
-          responsible:'',
-          therapist:'',
-          idUser: ''
-        });
-        console.log(data)
-      //habilitando botão
-      setLoading(false);
+        //zerando os estados  
+        setFormData({
+            ageChild:'',
+            childName:'',
+            responsible:'',
+            therapist:'',
+            idUser: ''
+          });
+          console.log(data)
+        //habilitando botão
+        setLoading(false);
         navigation.navigate('Confirm')
       })
       .catch(error => {
@@ -146,7 +146,6 @@ export function RegisterChild(){
               <FormSvg 
                   width={235}
                   height={130}
-
               />
               <Image source={LogoPng}  style={{ width: 72, height:48}}/>
           </HStack>
@@ -246,6 +245,7 @@ export function RegisterChild(){
               }} _spinner={{
                 color: "black"
               }}
+              _pressed={{ bg: "yellow.50" }}
               isLoadingText="Enviando..." 
               bg="primary.50" 
               size="lg" 

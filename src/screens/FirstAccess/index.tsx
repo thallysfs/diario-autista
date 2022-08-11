@@ -12,6 +12,10 @@ export function FirstAccess(){
     navigation.navigate('Register')
   }
 
+  function onLogin(){
+      navigation.navigate('Login')
+  }
+
   return(
     <Box>
       <Box 
@@ -45,6 +49,8 @@ export function FirstAccess(){
           size="md"
           bg="white"
           colorScheme="rose"
+          _pressed={{ bg: "gray.200" }}
+          onPress={onLogin} 
         >
            <Text
             color="tertiary.400"

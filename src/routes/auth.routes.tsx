@@ -5,6 +5,7 @@ import { FirstAccess } from '../screens/FirstAccess';
 import { Register } from '../screens/Register';
 import { RegisterChild } from '../screens/RegisterChild';
 import { Confirm } from '../screens/Confirm'
+import { Login } from '../screens/Login';
 
 
 
@@ -28,6 +29,10 @@ export function AuthRoutes(){
             <Screen
                 name="Confirm"
                 component={Confirm}
+            />
+            <Screen
+                name="Login"
+                component={Login}
             />
         </Navigator>
     )

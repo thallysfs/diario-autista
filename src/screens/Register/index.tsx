@@ -203,7 +203,7 @@ export function Register(){
               }              
             </FormControl>
 
-            <Button bg="primary.50" size="lg" marginTop={10} onPress={onSubmit}>
+            <Button bg="primary.50" size="lg" marginTop={10} onPress={onSubmit} _pressed={{ bg: "yellow.50" }} >
               <Text 
                 color="tertiary.50" 
                 fontSize={14}           
