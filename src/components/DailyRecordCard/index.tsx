@@ -2,16 +2,16 @@ import { Box, HStack, Text, VStack, Pressable, IPressableProps, Icon} from 'nati
 import { Feather } from '@expo/vector-icons';
 
 //criando tipagem dos dados
-export interface DailyRecordCardProps{
+export interface DiaryData{
     id: string;
     createdAt: string | undefined;
     description: string;
     uidUser: string;
-    updateAt?: string;
+    updatedAt?: string;
 }
 
 interface Props extends IPressableProps {
-    data: DailyRecordCardProps;
+    data: DiaryData;
 }
 
 export function DailyRecordCard({data, ...rest}: Props){

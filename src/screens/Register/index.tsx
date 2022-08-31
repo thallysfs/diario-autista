@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, ScrollView, SafeAreaView } from 'react-native'
+import { Alert, Image, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView } from 'react-native'
 import { Box, Text, Button, HStack, Stack, Input, Icon, FormControl, useToast } from 'native-base'
 import RegisterSvg from '../../assets/cadastro.svg'
 import LogoPng from '../../assets/logo.png'

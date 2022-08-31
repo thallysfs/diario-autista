@@ -4,7 +4,7 @@ import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, Modal, TextAr
 import { Feather } from '@expo/vector-icons';
 import { Load } from '../../components/Load'
 
-import { DailyRecordCard, DailyRecordCardProps} from '../../components/DailyRecordCard'
+import { DailyRecordCard, DiaryData} from '../../components/DailyRecordCard'
 import { Alert } from 'react-native';
 import { dateFormat } from '../../Utils/firestoreDateFormat';
 import { UserContext } from '../../routes';
@@ -13,18 +13,28 @@ import { CustomModal } from '../../components/CustomModal';
 
 export function Diary(){
   const [loading, setLoading] = useState(false)
-  const [dailyRecords, setDailyRecords] = useState<DailyRecordCardProps[]>([])
+  const [dailyRecords, setDailyRecords] = useState<DiaryData[]>([])
+  const [page, setPage] = useState<DiaryData>()
   const [showModal, setShowModal] = useState(false);
   const [showModalEditing, setShowModalEditing] = useState(false);
-  const [textareaRegister, setTextareaRegister] = useState('');
+  const [description, setDescription] = useState('');
 
   //consumindo o contexto que criei
   const uid = useContext(UserContext)
 
 
-  function handleOpenDiaryDetail(orderId: string){
+  function handleOpenModalDiaryDetail(orderId: string){
     //abrir modal
-    Alert.alert('Teste!')
+    //Alert.alert('Teste! '+ orderId)
+
+    //filtrar o array
+    //console.log(dailyRecords)
+    setPage(dailyRecords.find(x => x.id === orderId))
+
+    console.log(page)
+
+    setShowModalEditing(true);
+
   }
 
 
@@ -36,19 +46,20 @@ export function Diary(){
     .where('uidUser', '==', uid)
     .onSnapshot(snapshot => {
         const data = snapshot.docs.map(doc => {
-            const { createdAt, description, uidUser } = doc.data();
+            const { createdAt, description, uidUser, updatedAt } = doc.data();
 
             return {
               id: doc.id,
               createdAt: dateFormat(createdAt),
               description,
-              uidUser
+              uidUser,
+              updatedAt: dateFormat(updatedAt)
             }
           })
           
         setDailyRecords(data);
+
         setLoading(false);
-        console.log(data)
     });
 
     return subscriber;
@@ -87,7 +98,7 @@ export function Diary(){
           <FlatList 
             data={dailyRecords}
             keyExtractor={item => item.id}
-            renderItem={({item}) => <DailyRecordCard data={item} onPress={() => handleOpenDiaryDetail(item.id)} />}
+            renderItem={({item}) => <DailyRecordCard data={item} onPress={() => handleOpenModalDiaryDetail(item.id)} />}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 100}}
             ListEmptyComponent={()=>(
@@ -124,6 +135,10 @@ export function Diary(){
         onClose={() => setShowModal(false)}
         title="Novo registro!"
         setShowModal={() => setShowModal(false)}
+        data={{
+          uidUser: uid,   
+          description
+        }}
       >
         <TextArea
           AutoCompleteType="" 
@@ -136,16 +151,20 @@ export function Diary(){
             placeholderTextColor: "gray.300"
           }} 
           mb="5"
-          h={80} 
+          h={80}
+          value={description} 
+          onChangeText={text => setDescription(text)} 
         />
       </CustomModal>
       
       {/* Modal do diário - Ver/Editar registro */}
       <CustomModal 
         isOpen={showModalEditing}
-        onClose={() => setShowModal(false)}
-        title="Novo registro!"
-        setShowModal={() => setShowModal(false)}
+        onClose={() => setShowModalEditing(false)}
+        title={page?.createdAt}
+        setShowModal={() => setShowModalEditing(false)}
+        isEditing={true}
+        updatedAt={page?.updatedAt}
       >
         <TextArea
           AutoCompleteType="" 
@@ -157,7 +176,7 @@ export function Diary(){
           mb="5"
           h={80} 
         >
-          {}
+          {page?.description}
         </TextArea>
       </CustomModal>
   
