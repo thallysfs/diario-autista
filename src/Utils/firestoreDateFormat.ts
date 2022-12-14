@@ -4,9 +4,10 @@ export function dateFormat(timestamp: FirebaseFirestoreTypes.Timestamp) {
     if(timestamp){
         const date = new Date(timestamp.toDate());
 
-        const day = date.toLocaleDateString('pt-br');
+        const day = date.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
         const hour = date.toLocaleTimeString('pt-BR');
 
-        return `${day} às ${hour}`;
+        const dayF = day.split("/", 10)
+        return `${dayF[1]}/${dayF[0]}/${dayF[2]} às ${hour}`;
     }
 }

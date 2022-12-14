@@ -24,15 +24,10 @@ export function Diary(){
 
 
   function handleOpenModalDiaryDetail(orderId: string){
-    //abrir modal
-    //Alert.alert('Teste! '+ orderId)
-
     //filtrar o array
-    //console.log(dailyRecords)
     setPage(dailyRecords.find(x => x.id === orderId))
-
-    console.log(page)
-
+       
+    //abrir modal
     setShowModalEditing(true);
 
   }
@@ -40,9 +35,10 @@ export function Diary(){
 
   useEffect(()=>{
     setLoading(true);
-    //pegando registros no diário
+    //lendo registros no diário
     const subscriber = firestore()
     .collection('diary')
+    //.orderBy('createdAt', 'desc')
     .where('uidUser', '==', uid)
     .onSnapshot(snapshot => {
         const data = snapshot.docs.map(doc => {
@@ -60,7 +56,8 @@ export function Diary(){
         setDailyRecords(data);
 
         setLoading(false);
-    });
+    })
+    
 
     return subscriber;
 

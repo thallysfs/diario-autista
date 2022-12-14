@@ -35,9 +35,9 @@ export const theme = extendTheme({
         }
       },
       fonts: {
-        heading:  'Poppins',
-        body:     'Poppins',
-        mono:     'Poppins',
+        heading:  'Poppins_600SemiBold',
+        body:     'Poppins_500Medium',
+        mono:     'Poppins_400Regular',
       }
     });
   
