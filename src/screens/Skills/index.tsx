@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import  firestore  from '@react-native-firebase/firestore';
 import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack } from 'native-base'
 
+//chamar meu hook de Questions
+import { useQuestions } from '../../hooks/useQuestions'
+
 import { TestCard } from '../../components/TestCard'
 import { MyButton } from '../../components/MyButton';
 
@@ -17,9 +20,10 @@ export function Skills(){
   const [selectedAge, setSelectedAge] = useState("");
   const [skillQuestion, setSkillQuestion] = useState<SkillProps[]>([])
 
+  const {ids} = useQuestions()
 
   function handleSave() {
-    console.log("questões marcadas")
+    console.log("questões marcadas", ids)
   }
 
   function handleLisGet() {

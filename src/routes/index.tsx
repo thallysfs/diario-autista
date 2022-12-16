@@ -6,14 +6,15 @@ import { AppRoutes } from './app.routes'
 //importando o hook
 import { useUser } from '../hooks/useUser'
 
-//chamando o hook para pegar o valor da variável, desestruturando para pegar o uid que está dentro de "user"
 
 export function Routes(){
+    //chamando o hook para pegar o valor da variável, desestruturando para pegar o uid que está dentro de "user"
     const { uid } = useUser()
     
     return(
         <NavigationContainer>
-        { uid ? <AppRoutes /> : <AuthRoutes /> }
+            { uid ? <AppRoutes /> : <AuthRoutes /> }
         </NavigationContainer>
+
     )
 } 

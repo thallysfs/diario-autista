@@ -7,8 +7,9 @@ import { Load } from '../../components/Load'
 import { DailyRecordCard, DiaryData} from '../../components/DailyRecordCard'
 import { Alert } from 'react-native';
 import { dateFormat } from '../../Utils/firestoreDateFormat';
-import { UserContext } from '../../routes';
 import { CustomModal } from '../../components/CustomModal';
+
+import { useUser } from '../../hooks/useUser'
 
 
 export function Diary(){
@@ -20,7 +21,7 @@ export function Diary(){
   const [description, setDescription] = useState('');
 
   //consumindo o contexto que criei
-  const uid = useContext(UserContext)
+  const {uid} = useUser()
 
 
   function handleOpenModalDiaryDetail(orderId: string){

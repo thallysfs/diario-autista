@@ -4,7 +4,8 @@ import { Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Icon } from 'native-base';
 
-//meu hook que pega as questões marcadas
+//meu contexto que possui o estado das questions
+import { QuestionContextProvider } from '../context/QuestionsContext'
 
 
 // Telas para navegar
@@ -22,7 +23,7 @@ export function AppRoutes(){
     //Aqui estão as telas de navegação via Tab navigator
 
     return(
-        <>
+        <QuestionContextProvider>
             <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
             
             <Navigator
@@ -98,6 +99,6 @@ export function AppRoutes(){
                     }}
                 />
             </Navigator>
-        </>
+        </QuestionContextProvider>
     )
 }

@@ -29,7 +29,7 @@ export function QuestionContextProvider({ children }: QuestionProviderProps) {
 
 
   return (
-    <QuestionsContext.Provider value={{ids, updateId}}>
+    <QuestionsContext.Provider value={{ids, updateId }}>
       {children}
     </QuestionsContext.Provider>
   )

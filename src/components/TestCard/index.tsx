@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import {Text, Checkbox, VStack} from 'native-base'
 
+//chamar meu hook de Questions
+import { useQuestions } from '../../hooks/useQuestions'
+
 export interface QuestionProps {
   id: string;
   type?: 'QS' | 'QL' | 'QG' | 'QM' | 'AJ' | 'OPF';
@@ -15,9 +18,9 @@ interface TestCardProps {
 
 export function TestCard({title, data} : TestCardProps){
   const [groupValues, setGroupValues] = useState([]);
-  //const {updateId} = useQuestions()
+  const {updateId} = useQuestions()
 
-  //updateId(groupValues)
+  updateId(groupValues)
 
   console.log(title + '=' + groupValues)
   return (
