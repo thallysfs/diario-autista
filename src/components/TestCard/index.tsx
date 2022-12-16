@@ -15,8 +15,11 @@ interface TestCardProps {
 
 export function TestCard({title, data} : TestCardProps){
   const [groupValues, setGroupValues] = useState([]);
+  //const {updateId} = useQuestions()
 
-  //console.log(groupValues)
+  //updateId(groupValues)
+
+  console.log(title + '=' + groupValues)
   return (
     <VStack mt={5} mr={7} > 
       <Text

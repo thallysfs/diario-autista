@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import  firestore  from '@react-native-firebase/firestore';
-import { Box, Text, VStack, ScrollView, Select, CheckIcon } from 'native-base'
+import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack } from 'native-base'
 
 import { TestCard } from '../../components/TestCard'
+import { MyButton } from '../../components/MyButton';
 
 interface SkillProps {
   id: string;
@@ -17,6 +18,10 @@ export function Skills(){
   const [skillQuestion, setSkillQuestion] = useState<SkillProps[]>([])
 
 
+  function handleSave() {
+    console.log("questões marcadas")
+  }
+
   function handleLisGet() {
     if(selectedAge != "") {
       firestore()
@@ -24,34 +29,36 @@ export function Skills(){
       .where('ageMonth', '==', selectedAge)
       .onSnapshot( async (snapshot) => {
         const data = await snapshot.docs.map(doc => {
-          //const {id, type, ageMonth, description} = doc.data()
           return doc.data()
-          // return {
-          //   id,
-          //   type,
-          //   ageMonth,
-          //   description
-          // }
         })
 
         setSkillQuestion(data)
-
-        //console.log(skillQuestion)
       })
 
     }
   }
 
+  //filtrando categorias de habilidades
     const skillsQS = skillQuestion.filter((skillQs) => {
       return skillQs.type === 'QS'
     })
-    console.log(skillsQS)
+
+    const skillsQL = skillQuestion.filter((skillQs) => {
+      return skillQs.type === 'QL'
+    })
+
+    const skillsQG = skillQuestion.filter((skillQs) => {
+      return skillQs.type === 'QG'
+    })
+
+    const skillsQM = skillQuestion.filter((skillQs) => {
+      return skillQs.type === 'QM'
+    })
+
+    console.log(skillsQG)
 
   useEffect(() => {
     handleLisGet()
-    //console.log("age",selectedAge)
-    //console.log(skillQuestion)
-
 
   }, [selectedAge])
 
@@ -107,10 +114,22 @@ export function Skills(){
             <Select.Item label='4 anos' value='48' />
             <Select.Item label='5 anos' value='60' />
           </Select>
+          
+          <ScrollView showsVerticalScrollIndicator={false} mb={360}>
+            <Box>
+              <TestCard title='Social/Emocional' data={skillsQS} />
+              <TestCard title='Linguagem/ Comunicação' data={skillsQL} />
+              <TestCard title='Cognitivo (Aprendizado, resolução de problema)' data={skillsQG} />
+              <TestCard title='Movimento/ Desenv. Físico' data={skillsQM} />
+            </Box>
+            <HStack alignItems="space-between" justifyContent="space-between" mx={5} mt={5}>
+              <MyButton title='Cancelar' type='error' width={140} height={60} />
+              <MyButton title='Salvar' width={140} height={60} onPress={handleSave} />
+            </HStack>
 
-          <TestCard title='Social/Emocional' 
-            data={skillsQS}
-          />
+          </ScrollView>
+
+
         </VStack>
     </Box>
   )

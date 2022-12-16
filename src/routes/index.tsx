@@ -1,51 +1,19 @@
-import { useEffect, useState, createContext, useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import { Load } from '../components/Load'
-import auth, { FirebaseAuthTypes} from '@react-native-firebase/auth'
-
+//rotas
 import { AuthRoutes } from './auth.routes'
 import { AppRoutes } from './app.routes'
 
-interface UserType {
-    uid: string;
-}
+//importando o hook
+import { useUser } from '../hooks/useUser'
 
-//criando o contexto para armazenar os dados do login
-export const UserContext = createContext({} as UserType)
+//chamando o hook para pegar o valor da variável, desestruturando para pegar o uid que está dentro de "user"
 
 export function Routes(){
-    const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState<FirebaseAuthTypes.User>()
-
-
-    //estado para atualizar o contexto
-    //onst [userContext, setUserContext] = useState<UserType>({} as UserType)
-
-    
-    useEffect(()=>{
-        //verifica se o usuário está autenticado
-        const subscriber = auth()
-        .onAuthStateChanged(response => {
-            setUser(response)
-            //setTokenUser(responser.uid)
-            setLoading(false)
-            console.log(response)
-        })
-
-        return subscriber
-    }, [])
-
-    if(loading) {
-        return <Load />
-      }
+    const { uid } = useUser()
     
     return(
         <NavigationContainer>
-            <UserContext.Provider value={user?.uid}>
-                {
-                    user ? <AppRoutes /> : <AuthRoutes />
-                }
-            </UserContext.Provider>
+        { uid ? <AppRoutes /> : <AuthRoutes /> }
         </NavigationContainer>
     )
 } 

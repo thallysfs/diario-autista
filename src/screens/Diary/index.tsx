@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import  firestore, {firebase}  from '@react-native-firebase/firestore';
-import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, Modal, TextArea} from 'native-base'
+import  firestore  from '@react-native-firebase/firestore';
+import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, TextArea} from 'native-base'
 import { Feather } from '@expo/vector-icons';
 import { Load } from '../../components/Load'
 

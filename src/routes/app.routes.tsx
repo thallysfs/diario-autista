@@ -4,6 +4,8 @@ import { Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Icon } from 'native-base';
 
+//meu hook que pega as questões marcadas
+
 
 // Telas para navegar
 import { Home } from '../screens/Home';
@@ -17,85 +19,85 @@ const { Navigator, Screen } = createBottomTabNavigator();
 
 export function AppRoutes(){
 
-    //Aqui ficarão as telas de navegação via Tab navigator
+    //Aqui estão as telas de navegação via Tab navigator
 
     return(
         <>
-        <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
-        
-        <Navigator
-        //estilizando a tab
-            screenOptions={{
-                headerShown: false,
-                tabBarActiveTintColor: "tertiary.200",
-                tabBarInactiveTintColor: "tertiary.300",
-                tabBarShowLabel: false,
-                tabBarStyle: {
-                    height: 68,
-                    paddingVertical: Platform.OS === 'ios' ? 20 : 0
-                }
-            }}
-        >
-            {/* Telas abaixo: */}
-            <Screen 
-                name="Home"
-                component={Home}
-                //essa desestruturação de size e color é para pegar dinamicamente a cor para o ícone.
-                // se selecionado é uma cor, senão outra. Se eu definir uma cor, ela ficará fixa independente da seleção
-                options={{
-                    tabBarIcon: (({ size, color }) => 
+            <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
+            
+            <Navigator
+            //estilizando a tab
+                screenOptions={{
+                    headerShown: false,
+                    tabBarActiveTintColor: "tertiary.200",
+                    tabBarInactiveTintColor: "tertiary.300",
+                    tabBarShowLabel: false,
+                    tabBarStyle: {
+                        height: 68,
+                        paddingVertical: Platform.OS === 'ios' ? 20 : 0
+                    }
+                }}
+            >
+                {/* Telas abaixo: */}
+                <Screen 
+                    name="Home"
+                    component={Home}
+                    //essa desestruturação de size e color é para pegar dinamicamente a cor para o ícone.
+                    // se selecionado é uma cor, senão outra. Se eu definir uma cor, ela ficará fixa independente da seleção
+                    options={{
+                        tabBarIcon: (({ size, color }) => 
+                            <Icon 
+                                as={Feather}
+                                name="list"
+                                size={45}
+                                color={color}
+                            />
+                        )
+                    }}
+                />        
+                <Screen 
+                    name="Diário"
+                    component={Diary}
+                    options={{
+                        tabBarIcon: (({ size, color }) => 
                         <Icon 
                             as={Feather}
-                            name="list"
+                            name="edit"
                             size={45}
                             color={color}
                         />
-                    )
-                }}
-            />        
-            <Screen 
-                name="Diário"
-                component={Diary}
-                options={{
-                    tabBarIcon: (({ size, color }) => 
-                    <Icon 
-                        as={Feather}
-                        name="edit"
-                        size={45}
-                        color={color}
-                    />
-                    )
-                }}
-            />              
-            <Screen 
-                name="Habilidades"
-                component={Skills}
-                options={{
-                    tabBarIcon: (({ size, color }) => 
-                    <Icon 
-                        as={Feather}
-                        name="trending-up"
-                        size={45}
-                        color={color}
-                    />
-                    )
-                }}
-            />            
-            <Screen 
-                name="Gráfico"
-                component={Graphic}
-                options={{
-                    tabBarIcon: (({ size, color }) => 
-                    <Icon 
-                        as={Feather}
-                        name="pie-chart"
-                        size={45}
-                        color={color}
-                    />
-                    )
-                }}
-            />
-        </Navigator>
+                        )
+                    }}
+                />              
+                <Screen 
+                    name="Habilidades"
+                    component={Skills}
+                    options={{
+                        tabBarIcon: (({ size, color }) => 
+                        <Icon 
+                            as={Feather}
+                            name="trending-up"
+                            size={45}
+                            color={color}
+                        />
+                        )
+                    }}
+                />            
+                <Screen 
+                    name="Gráfico"
+                    component={Graphic}
+                    options={{
+                        tabBarIcon: (({ size, color }) => 
+                        <Icon 
+                            as={Feather}
+                            name="pie-chart"
+                            size={45}
+                            color={color}
+                        />
+                        )
+                    }}
+                />
+            </Navigator>
         </>
     )
 }
