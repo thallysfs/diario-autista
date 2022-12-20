@@ -7,8 +7,14 @@ interface QuestionType {
 
 //tipo do contexto - o que vou compartilhar com outros componentes
 interface QuestionContextProps {
-  ids: QuestionType | undefined;
-  updateId: (idsSelected:QuestionType) => void;
+  idQs: QuestionType | undefined;
+  setIdQs: (idsSelected:QuestionType) => void;
+  idQl: QuestionType | undefined;
+  setIdQl: (idsSelected:QuestionType) => void;
+  idQg: QuestionType | undefined;
+  setIdQg: (idsSelected:QuestionType) => void;
+  idQm: QuestionType | undefined;
+  setIdQm: (idsSelected:QuestionType) => void;
 }
 
 interface QuestionProviderProps {
@@ -21,15 +27,14 @@ export const QuestionsContext = createContext({} as QuestionContextProps)
 export function QuestionContextProvider({ children }: QuestionProviderProps) {
   
   //regras de negócio
-  const [ids, setIds] = useState<QuestionType>()
-
-  function updateId(idsSelected: QuestionType) {
-    setIds(idsSelected)
-  }
+  const [idQs, setIdQs] = useState<QuestionType>()
+  const [idQl, setIdQl] = useState<QuestionType>()
+  const [idQg, setIdQg] = useState<QuestionType>()
+  const [idQm, setIdQm] = useState<QuestionType>()
 
 
   return (
-    <QuestionsContext.Provider value={{ids, updateId }}>
+    <QuestionsContext.Provider value={{ idQs, idQl, idQg, idQm, setIdQs, setIdQl, setIdQg, setIdQm }}>
       {children}
     </QuestionsContext.Provider>
   )

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import {Button,Box, Modal, IModalProps, Text, useToast} from 'native-base'
-import firestore, {firebase} from '@react-native-firebase/firestore'
+import firestore from '@react-native-firebase/firestore'
 import { Toast } from '../../components/Toast' 
 
 //tipagem do modal
@@ -33,7 +33,7 @@ export function CustomModal({
   function onSave(data: any){
     //salvando dados da criança na tabela de Users
     if(isEditing){
-      //update
+      //atualiza descrição existente
     }
     else{
       //create

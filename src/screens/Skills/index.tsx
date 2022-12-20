@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import  firestore  from '@react-native-firebase/firestore';
-import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack } from 'native-base'
+import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack, useToast, Modal } from 'native-base'
 
 //chamar meu hook de Questions
 import { useQuestions } from '../../hooks/useQuestions'
 
 import { TestCard } from '../../components/TestCard'
 import { MyButton } from '../../components/MyButton';
+import { useUser } from '../../hooks/useUser';
+import { Toast } from '../../components/Toast' 
+import { Load } from '../../components/Load' 
 
 interface SkillProps {
   id: string;
@@ -19,15 +22,69 @@ interface SkillProps {
 export function Skills(){
   const [selectedAge, setSelectedAge] = useState("");
   const [skillQuestion, setSkillQuestion] = useState<SkillProps[]>([])
+  const [loading, setLoading] = useState(false)
 
-  const {ids} = useQuestions()
+  const toast = useToast();
+  const {idQs, idQl, idQg, idQm} = useQuestions()
+
+  //contexto
+  const {uid} = useUser()
 
   function handleSave() {
-    console.log("questões marcadas", ids)
+    //console.log("questões idQs", idQs)
+    //console.log("questões idQl", idQl)
+    //console.log("questões idQg", idQg)
+    //console.log("questões idQm", idQm)
+
+    //concatenando array de questões
+    var allquestions = idQs?.concat(idQl, idQg, idQm)
+
+    //salvando dados na tabela
+    firestore()
+    .collection('test')
+    .add({
+      date: firestore.FieldValue.serverTimestamp(),
+      uidUser: uid,
+      selectedAge: selectedAge,
+      questionsIds: allquestions 
+    })
+    .then(data =>{
+      //toast de confirmação
+      toast.show({
+        placement: "top",
+        render: () => {
+          return <Toast 
+            colorBg='success.400' 
+            title='Habilidades registradas!' 
+            description={`ok, tudo certo`}
+            iconName='check-circle'
+          />
+        }
+      });
+      //direcionar pra página de informação
+    })
+    .catch(error => {
+      console.log(error.code);
+      toast.show({
+        placement: "top",
+        render: () => {
+          return <Toast 
+              colorBg='error.400' 
+              title='Não foi possível salvar, tente novamente mais tarde' 
+              description={`Erro ${error}`}
+              iconName='error'
+            />
+        }
+      });
+    })
+
+
   }
 
   function handleLisGet() {
     if(selectedAge != "") {
+      setLoading(true)
+
       firestore()
       .collection('skills')
       .where('ageMonth', '==', selectedAge)
@@ -37,6 +94,7 @@ export function Skills(){
         })
 
         setSkillQuestion(data)
+        setLoading(false)
       })
 
     }
@@ -65,6 +123,10 @@ export function Skills(){
     handleLisGet()
 
   }, [selectedAge])
+
+  if(loading) {
+    return <Load />
+  }
 
   return(
     <Box>
@@ -118,22 +180,23 @@ export function Skills(){
             <Select.Item label='4 anos' value='48' />
             <Select.Item label='5 anos' value='60' />
           </Select>
-          
-          <ScrollView showsVerticalScrollIndicator={false} mb={360}>
-            <Box>
-              <TestCard title='Social/Emocional' data={skillsQS} />
-              <TestCard title='Linguagem/ Comunicação' data={skillsQL} />
-              <TestCard title='Cognitivo (Aprendizado, resolução de problema)' data={skillsQG} />
-              <TestCard title='Movimento/ Desenv. Físico' data={skillsQM} />
-            </Box>
-            <HStack alignItems="space-between" justifyContent="space-between" mx={5} mt={5}>
-              <MyButton title='Cancelar' type='error' width={140} height={60} />
-              <MyButton title='Salvar' width={140} height={60} onPress={handleSave} />
-            </HStack>
-
-          </ScrollView>
-
-
+          {
+            selectedAge ? 
+            <ScrollView showsVerticalScrollIndicator={false} mb={360}>
+              <Box>
+                <TestCard title='Social/Emocional' data={skillsQS} />
+                <TestCard title='Linguagem/ Comunicação' data={skillsQL} />
+                <TestCard title='Cognitivo (Aprendizado, resolução de problema)' data={skillsQG} />
+                <TestCard title='Movimento/ Desenv. Físico' data={skillsQM} />
+              </Box>
+              <HStack alignItems="space-between" justifyContent="space-between" mx={5} mt={5}>
+                <MyButton title='Cancelar' type='error' width={140} height={60} />
+                <MyButton title='Salvar' width={140} height={60} onPress={handleSave} />
+              </HStack>
+            </ScrollView>
+            :
+            <></>
+          }
         </VStack>
     </Box>
   )

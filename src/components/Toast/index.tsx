@@ -16,12 +16,12 @@ export function Toast({description, title, colorBg, iconName}: Props){
       <Box bg={colorBg} maxWidth="80%" alignSelf="center" flexDirection="row" rounded={5}>
       <VStack space={1} flexShrink={1} w="100%" justifyContent="center" alignItems='center'>
         <HStack space={2} alignItems="center">
-          <Icon as={<MaterialIcons name={iconName} />} marginTop={2} color='black' size='md'/>
+          <Icon as={<MaterialIcons name={iconName} />} marginTop={2} ml={1} color='black' size='md'/>
           <Text fontSize="md" fontWeight="medium" color="solid" marginTop={2}>
             {title}
           </Text>
         </HStack>
-        <Text px="6" color="lightText" marginBottom='2'>
+        <Text px="6" color="lightText" marginBottom={2}>
           {description}
         </Text>
       </VStack>

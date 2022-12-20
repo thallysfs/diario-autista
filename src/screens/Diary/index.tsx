@@ -20,14 +20,14 @@ export function Diary(){
   const [showModalEditing, setShowModalEditing] = useState(false);
   const [description, setDescription] = useState('');
 
-  //consumindo o contexto que criei
+  //consumindo o contexto do User
   const {uid} = useUser()
 
 
   function handleOpenModalDiaryDetail(orderId: string){
     //filtrar o array
     setPage(dailyRecords.find(x => x.id === orderId))
-       
+    
     //abrir modal
     setShowModalEditing(true);
 
