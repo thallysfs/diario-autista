@@ -26,7 +26,6 @@ export const QuestionsContext = createContext({} as QuestionContextProps)
 
 export function QuestionContextProvider({ children }: QuestionProviderProps) {
   
-  //regras de negócio
   const [idQs, setIdQs] = useState<QuestionType>()
   const [idQl, setIdQl] = useState<QuestionType>()
   const [idQg, setIdQg] = useState<QuestionType>()

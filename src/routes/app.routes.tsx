@@ -8,12 +8,14 @@ import { Icon } from 'native-base';
 import { QuestionContextProvider } from '../context/QuestionsContext'
 
 
+import { Header } from '../components/Header';
+
 // Telas para navegar
 import { Home } from '../screens/Home';
 import { Diary } from '../screens/Diary';
 import { Skills } from '../screens/Skills';
 import { Graphic } from '../screens/Graphic';
-import { Header } from '../components/Header';
+import { EndSkill } from '../screens/EndSkill';
 
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -97,6 +99,13 @@ export function AppRoutes(){
                         />
                         )
                     }}
+                />
+
+                {/* Essa tela não aparece no tabBar, serve apenas para navegar na rota */}
+                <Screen 
+                    name='FimTeste'
+                    component={EndSkill}
+                    options={{ tabBarButton: () => null }}
                 />
             </Navigator>
         </QuestionContextProvider>

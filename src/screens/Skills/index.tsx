@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import  firestore  from '@react-native-firebase/firestore';
-import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack, useToast, Modal } from 'native-base'
-
+import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack, useToast } from 'native-base'
+import { useNavigation } from '@react-navigation/native'
 //chamar meu hook de Questions
 import { useQuestions } from '../../hooks/useQuestions'
 
@@ -24,17 +24,14 @@ export function Skills(){
   const [skillQuestion, setSkillQuestion] = useState<SkillProps[]>([])
   const [loading, setLoading] = useState(false)
 
+  const { navigate } = useNavigation() 
   const toast = useToast();
-  const {idQs, idQl, idQg, idQm} = useQuestions()
+  const {idQs, idQl, idQg, idQm, setIdQs, setIdQl, setIdQg, setIdQm} = useQuestions()
 
   //contexto
   const {uid} = useUser()
 
   function handleSave() {
-    //console.log("questões idQs", idQs)
-    //console.log("questões idQl", idQl)
-    //console.log("questões idQg", idQg)
-    //console.log("questões idQm", idQm)
 
     //concatenando array de questões
     var allquestions = idQs?.concat(idQl, idQg, idQm)
@@ -62,6 +59,17 @@ export function Skills(){
         }
       });
       //direcionar pra página de informação
+      navigate('FimTeste', { ageSelected: selectedAge })
+
+      //zerar todos os estados do meu contexto
+      setIdQs([])
+      setIdQl([])
+      setIdQg([])
+      setIdQm([])
+
+      //zerar select
+      setSelectedAge("")
+
     })
     .catch(error => {
       console.log(error.code);
