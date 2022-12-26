@@ -16,8 +16,6 @@ interface Props extends IModalProps {
 
 //tipagem do objeto que vai pro onSubmite
 
-
-
 export function CustomModal({
     title, 
     children, 
@@ -78,7 +76,7 @@ export function CustomModal({
         });
       })
     }
-   }
+  }
   
 
   return(

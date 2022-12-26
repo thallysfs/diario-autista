@@ -48,56 +48,67 @@ export function AppRoutes(){
                     //essa desestruturação de size e color é para pegar dinamicamente a cor para o ícone.
                     // se selecionado é uma cor, senão outra. Se eu definir uma cor, ela ficará fixa independente da seleção
                     options={{
-                        tabBarIcon: (({ size, color }) => 
+                        tabBarLabel:'Home',
+                        tabBarLabelPosition: 'below-icon',
+                        tabBarShowLabel: true,
+                        tabBarIcon: ({ color }) => (
                             <Icon 
                                 as={Feather}
                                 name="list"
-                                size={45}
+                                size={35}
                                 color={color}
-                            />
-                        )
+                            />)
+                        
                     }}
                 />        
                 <Screen 
                     name="Diário"
                     component={Diary}
                     options={{
-                        tabBarIcon: (({ size, color }) => 
+                        tabBarLabelPosition: 'below-icon',
+                        tabBarShowLabel: true,
+                        tabBarIcon: ({ size, color }) => 
                         <Icon 
                             as={Feather}
                             name="edit"
-                            size={45}
+                            size={35}
                             color={color}
-                        />
-                        )
+                        />,
+                        tabBarLabel:'Diário'
+                        
                     }}
                 />              
                 <Screen 
                     name="Habilidades"
                     component={Skills}
                     options={{
-                        tabBarIcon: (({ size, color }) => 
+                        tabBarLabelPosition: 'below-icon',
+                        tabBarShowLabel: true,
+                        tabBarIcon: ({ size, color }) => 
                         <Icon 
                             as={Feather}
                             name="trending-up"
-                            size={45}
+                            size={35}
                             color={color}
-                        />
-                        )
+                        />,
+                        tabBarLabel:'Habilidades'
                     }}
                 />            
                 <Screen 
                     name="Gráfico"
                     component={Graphic}
                     options={{
-                        tabBarIcon: (({ size, color }) => 
+                        tabBarLabelPosition: 'below-icon',
+                        tabBarShowLabel: true,
+                        tabBarIcon: ({ size, color }) => 
                         <Icon 
                             as={Feather}
                             name="pie-chart"
-                            size={45}
+                            size={35}
                             color={color}
-                        />
-                        )
+                        />,
+                        tabBarLabel:'Gráficos'
+                        
                     }}
                 />
 

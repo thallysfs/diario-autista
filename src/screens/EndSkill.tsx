@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import  firestore  from '@react-native-firebase/firestore';
 import {Text, Center, VStack, HStack, FlatList  } from 'native-base'
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
+import { ModalListSkills } from '../components/ModalListSkills';
 import { MyButton } from '../components/MyButton'
 import DoctorsSvg from '../assets/doctors.svg'
 
@@ -22,10 +23,13 @@ export function EndSkill(){
   const [skillAj, setSkillAj] = useState<ListSkillProps[]>([])
   const [skillOpf, setSkillOpf] = useState<ListSkillProps[]>([])
   const [loading, setLoading] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const { navigate } = useNavigation() 
   const route = useRoute()
+  
   const { ageSelected } = route.params as RouteParams
 
-  function handleListGetAj() {
+  function onListGetAj() {
     if(ageSelected != "") {
       setLoading(true)
 
@@ -50,7 +54,7 @@ export function EndSkill(){
     }
   }
 
-  function handleListGetOpf() {
+  function onListGetOpf() {
     if(ageSelected != "") {
       setLoading(true)
 
@@ -75,11 +79,16 @@ export function EndSkill(){
     }
   }
 
-  useEffect(()=>{
-    handleListGetAj()
-    handleListGetOpf()
+  function handleRedirect(){
+    //direcionar pra página de informação
+    navigate('Home')
+  }
 
-    console.log(skillAj)
+  useEffect(()=>{
+    onListGetAj()
+    onListGetOpf()
+
+    console.log(skillOpf)
   },[ageSelected])
 
   if(loading) {
@@ -97,7 +106,7 @@ export function EndSkill(){
             color="tertiary.50"
           >Aviso importante</Text>
         </Center>
-        <Center pt={5}><DoctorsSvg width={154} height={140} /></Center>
+        <Center pt={3}><DoctorsSvg width={154} height={140} /></Center>
         <Center pt={5}>
           <Text
             fontFamily="heading"
@@ -120,11 +129,20 @@ export function EndSkill(){
           
         </Center>
         <Center>
-          <HStack alignItems="space-between" pt={5} >
-            <MyButton title='Ciente' type='info' width={161} height={44} mr={3} />
-            <MyButton title='O que posso fazer?' width={161} height={44} />
+          <HStack alignItems="space-between" pt={10} >
+            <MyButton title='Ciente' type='info' width={161} height={44} mr={3} onPress={handleRedirect} />
+            <MyButton title='O que posso fazer?' width={161} height={44} onPress={() => setShowModal(true)} />
           </HStack>
         </Center>
+
+        {/* Modal */}
+        <ModalListSkills 
+          title='O que posso fazer?'
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          setShowModal={() => setShowModal(false)}
+          data={skillOpf}
+        />
       </VStack>
   )
 }
