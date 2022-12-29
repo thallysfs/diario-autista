@@ -50,7 +50,7 @@ export function Register(){
     //Validações
     if (email === '') {
       setErrors({...errors,
-         email: 'Email é obrigatório'
+        email: 'Email é obrigatório'
       });
       //habilitando botão
       setLoading(false);
@@ -235,48 +235,6 @@ export function Register(){
           }
         });
       }
-
-      // //salvando dados da criança na tabela de Users
-      // firestore()
-      // .collection('users')
-      // .add({
-      //   ageChild: formatedAgeChild,
-      //   createdAt: firestore.FieldValue.serverTimestamp(),
-      //   idUser: uid,
-      //   nameChild: formData.childName,
-      //   responsible: formData.responsible,
-      //   therapist: formData.therapist,
-
-      // })
-      // .then(data =>{
-      //   //zerando os estados  
-      //   setFormData({
-      //       ageChild:'',
-      //       childName:'',
-      //       responsible:'',
-      //       therapist:'',
-      //       idUser: ''
-      //     });
-      //     console.log(data)
-      //   //habilitando botão
-      //   setLoading(false);
-      //   navigation.navigate('Confirm')
-      // })
-      // .catch(error => {
-      //   console.log(error.code);
-
-      //   toast.show({
-      //     placement: "top",
-      //     render: () => {
-      //       return <Toast 
-      //                 colorBg='error.400' 
-      //                 title='Senhas diferentes' 
-      //                 description={`Erro ${error}`}
-      //                 iconName='error'
-      //               />
-      //     }
-      //   });
-      // })
     })
   }
 

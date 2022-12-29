@@ -10,6 +10,7 @@ import { MyButton } from '../../components/MyButton';
 import { useUser } from '../../hooks/useUser';
 import { Toast } from '../../components/Toast' 
 import { Load } from '../../components/Load' 
+import { Header } from '../../components/Header';
 
 interface SkillProps {
   id: string;
@@ -137,6 +138,8 @@ export function Skills(){
   }
 
   return(
+    <>
+    <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
     <Box>
         <Box background="secondary.200">  
           <Text 
@@ -190,7 +193,7 @@ export function Skills(){
           </Select>
           {
             selectedAge ? 
-            <ScrollView showsVerticalScrollIndicator={false} mb={360}>
+            <ScrollView showsVerticalScrollIndicator={false} mb={455}>
               <Box>
                 <TestCard title='Social/Emocional' data={skillsQS} />
                 <TestCard title='Linguagem/ Comunicação' data={skillsQL} />
@@ -207,6 +210,7 @@ export function Skills(){
           }
         </VStack>
     </Box>
+    </>
   )
 }
 

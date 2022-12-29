@@ -5,11 +5,11 @@ import { Feather } from '@expo/vector-icons';
 import { Load } from '../../components/Load'
 
 import { DailyRecordCard, DiaryData} from '../../components/DailyRecordCard'
-import { Alert } from 'react-native';
 import { dateFormat } from '../../Utils/firestoreDateFormat';
 import { CustomModal } from '../../components/CustomModal';
 
 import { useUser } from '../../hooks/useUser'
+import { Header } from '../../components/Header';
 
 
 export function Diary(){
@@ -67,6 +67,7 @@ export function Diary(){
   
   return(
     <>
+      <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
       <Box background="secondary.200">  
         <Text 
           textAlign="center"

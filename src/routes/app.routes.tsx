@@ -16,6 +16,7 @@ import { Diary } from '../screens/Diary';
 import { Skills } from '../screens/Skills';
 import { Graphic } from '../screens/Graphic';
 import { EndSkill } from '../screens/EndSkill';
+import { Account } from '../screens/Account';
 
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -25,9 +26,7 @@ export function AppRoutes(){
     //Aqui estão as telas de navegação via Tab navigator
 
     return(
-        <QuestionContextProvider>
-            <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
-            
+        <QuestionContextProvider>         
             <Navigator
             //estilizando a tab
                 screenOptions={{
@@ -112,11 +111,29 @@ export function AppRoutes(){
                     }}
                 />
 
-                {/* Essa tela não aparece no tabBar, serve apenas para navegar na rota */}
+                {/* Essas telas não aparece no tabBar, serve apenas para navegar na rota */}
                 <Screen 
                     name='FimTeste'
                     component={EndSkill}
                     options={{ tabBarButton: () => null }}
+                />
+                <Screen 
+                    name='Conta'
+                    component={Account}
+                    options={{
+                        tabBarButton: () => null,
+                        tabBarLabelPosition: 'below-icon',
+                        tabBarShowLabel: true,
+                        tabBarIcon: ({ size, color }) => 
+                        <Icon 
+                            as={Feather}
+                            name="pie-chart"
+                            size={35}
+                            color={color}
+                        />,
+                        tabBarLabel:'Gráficos'
+                        
+                    }}
                 />
             </Navigator>
         </QuestionContextProvider>

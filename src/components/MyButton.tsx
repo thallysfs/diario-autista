@@ -43,14 +43,3 @@ export function MyButton({title, type='success', ...rest}: ButtonProps){
   </Button>
   )
 }
-
-// <Button.Group space={2}>
-// <Button variant="ghost" colorScheme="blueGray" onPress={()=>setShowModal(showModal)}>
-//   Cancelar
-// </Button>
-// <Button onPress={() => onSave(data)}>
-//   {
-//     isEditing ? 'Editar' : 'Salvar'
-//   }
-// </Button>
-// </Button.Group>

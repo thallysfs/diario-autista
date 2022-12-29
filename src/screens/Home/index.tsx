@@ -1,12 +1,21 @@
 import React, { useEffect } from 'react'
-import { Box, Text, HStack, Icon, VStack, Pressable } from 'native-base'
-import { Feather } from '@expo/vector-icons';
-import { PressableBox } from '../../components/PressableBox';
+import { Box, VStack, ScrollView, Text, Center, Icon, HStack } from 'native-base'
+import { useNavigation } from '@react-navigation/native'
+import axios from 'axios';
+import XMLParser from 'react-xml-parser';
+
 //import {dados197} from '../../Utils/dados'
 import  firestore from '@react-native-firebase/firestore';
+import { InfoBox } from '../../components/InfoBox';
+import { Feather } from '@expo/vector-icons';
+
+import Account from '../../assets/account.png'
+import Config from '../../assets/config.png'
+import Notebook from '../../assets/notebook.png'
+import { Header } from '../../components/Header';
 
 export function Home(){
-
+  const { navigate } = useNavigation() 
     // const m = dados197.split("|")
 
     // console.log("My array", m)
@@ -24,92 +33,78 @@ export function Home(){
     //     console.log("ok")
     //   })
 
+    function GetFeed() {
+      // const options = {
+      //   method: 'GET'
+      // }
+
+      // fetch('https://www.canalautismo.com.br/categoria/noticia/feed', options)
+      //   .then(response => response.text())
+      //   .then(data => {
+      //     const parser = new DOMParser();
+      //     const xml = parser.parseFromString(data, "application/xml");
+      //     console.log(xml);
+      //   })
+
+      axios.get('https://www.canalautismo.com.br/categoria/noticia/feed')
+        .then(response => {
+          const json = new XMLParser().parseFromString(response.data)
+          console.log(json)
+        })
+
+
+    }
+
+
+    function onRedirectAccount() {
+      navigate('Conta')
+    }    
+    
+    function onRedirectConfiguration() {
+      navigate('Configurações')
+    }    
+    
+    function onRedirectDiary() {
+      navigate('Diário')
+    }    
+
+    useEffect(()=>{
+      GetFeed()
+    },[])
+
+
   return(
-    <Box marginBottom={280}>
-      <HStack space={2} justifyContent="space-between" margin={15} height="25%">
-        <Pressable 
-          background="primary.50" 
-          width="50%" 
-          borderRadius={5}
-          shadow="2"
-        >
-          <HStack justifyContent="center" marginTop={5}>
-            <Icon 
-              as={Feather}
-              name="user"
-              size={10}
-              color="black"
-            />
-            <Text color="black" fontFamily="Poppins_600SemiBold" fontSize={18} textAlign="center">
-              Dados da {'\n'}
-              conta
-            </Text>
-          </HStack>
-        </Pressable>
-        <Pressable background="#73B0E6" width="50%" borderRadius={5} shadow="2" justifyContent="center">
+    <>
+    <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
+    <Box marginBottom={280} flex={1}>
+      <VStack space={3} alignItems="center" marginTop={5}>
+        <InfoBox name='Seus dados' image={Account} alt='configurações da conta' redirect={onRedirectAccount} />
+        <InfoBox name='Configurações' image={Config} alt='engrenagem numa caixa' redirect={onRedirectConfiguration} />
+        <InfoBox name='Registro diário' image={Notebook} alt='caderno com lápis' redirect={onRedirectDiary} />
+      </VStack>
+      <Center bg="white" marginTop={3} rounded={5} shadow="2" mx={5} pt={2}>
+        <HStack>
           <Icon 
             as={Feather}
-            name="settings"
-            size={10}
+            name="alert-triangle"
+            size={30}
             color="black"
           />
-          <Text color="black" fontFamily="Poppins_600SemiBold" fontSize={18} textAlign="center">
-            Configurações
+          <Text
+            fontFamily="heading"
+            fontWeight={500}
+            fontSize={20}
+            marginLeft={2}
+          >
+            Informações úteis
           </Text>
-        </Pressable>
-      </HStack>
-      <VStack>
-      <PressableBox 
-        title='Último registro do diário'
-        iconName='book'
-        background="#E68E8A" 
-        height="25%" 
-        marginX={15} 
-        borderRadius={5} 
-        shadow="2"
-        marginBottom={2}
-      />
-      <PressableBox 
-        title='Informações úteis'
-        iconName='settings'
-        background="#949945" 
-        height="75%" 
-        marginX={15} 
-        borderRadius={5} 
-        shadow="2"
-      />
-      </VStack>
+          </HStack>
+        <ScrollView>
+          
+        </ScrollView>
+      </Center>
+
     </Box>
+    </>
   )
 }
-
-
-// import React from "react";
-// import { Pressable, Text, Box, HStack, Spacer, Flex, Badge, Center, NativeBaseProvider, Icon } from "native-base";
-
-// export function Home() {
-//   return <Box alignItems="center">
-//       <Pressable maxW="96">
-//         {({
-//         isHovered,
-//         isFocused,
-//         isPressed
-//       }) => {
-//         return <Box bg={isPressed ? "coolGray.200" : isHovered ? "coolGray.200" : "coolGray.100"}  p="5" rounded="8" shadow={3} borderWidth="1" borderColor="coolGray.300">
-//           <HStack>
-//            <Icon 
-//               as={Feather}
-//               name="settings"
-//               size={10}
-//               color="black"
-//             />
-//             <Text color="black" fontFamily="Poppins_600SemiBold" fontSize={20} textAlign="center">
-//               Informações úteis
-//             </Text>
-//           </HStack>
-//         </Box>;
-        
-//       }}
-//       </Pressable>
-//     </Box>;
-// }

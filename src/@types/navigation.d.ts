@@ -6,6 +6,8 @@ export declare global {
       Diário: undefined;
       Habilidades: undefined;
       Gráfico: undefined;
+      Configurações: undefined;
+      Conta: undefined;
       FimTeste: {
         ageSelected: string;
       } 

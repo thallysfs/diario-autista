@@ -52,13 +52,13 @@ export function FirstAccess(){
           _pressed={{ bg: "gray.200" }}
           onPress={onLogin} 
         >
-           <Text
-            color="tertiary.400"
-            fontFamily="body"
-            fontWeight={500}
-            marginLeft={6}
-            fontSize={20}
-           >
+          <Text
+          color="tertiary.400"
+          fontFamily="body"
+          fontWeight={500}
+          marginLeft={6}
+          fontSize={20}
+          >
             Entrar com e-mail
           </Text>
         </Button>

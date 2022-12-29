@@ -96,7 +96,7 @@ export function EndSkill(){
   }
 
   return (
-      <VStack flex={1} bg="secondary.200">
+      <VStack flex={1} bg="secondary.200" pt={10}>
         <Center paddingTop={5}>
           <Text
             textAlign="center"
