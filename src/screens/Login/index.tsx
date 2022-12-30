@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import auth from '@react-native-firebase/auth';
 import { Box, Button, Center, Text, Icon, HStack, Stack, FormControl, Input, Image } from 'native-base'
-import { Feather } from '@expo/vector-icons';
 import { Alert, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons';
 import LogoPng from '../../assets/logo.png'
@@ -16,11 +15,13 @@ export function Login(){
     const [showPassword, setShow] = useState(false);
     const [errors, setErrors] = useState({});
 
+    const { navigate } = useNavigation() 
+
     function handleSignIn() {
     //Validar email
     if (email === '') {
       setErrors({...errors,
-         email: 'Email é obrigatório'
+        email: 'Email é obrigatório'
       });
       return false;
     }

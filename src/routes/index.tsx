@@ -5,15 +5,17 @@ import { AppRoutes } from './app.routes'
 
 //importando o hook
 import { useUser } from '../hooks/useUser'
+import { useEffect } from 'react';
 
 
 export function Routes(){
     //chamando o hook para pegar o valor da variável, desestruturando para pegar o uid que está dentro de "user"
-    const { uid } = useUser()
-    
+    const { user } = useUser()
+    console.log('uid', user.uid)
+
     return(
         <NavigationContainer>
-            { uid ? <AppRoutes /> : <AuthRoutes /> }
+            { user.uid ? <AppRoutes /> : <AuthRoutes /> }
         </NavigationContainer>
 
     )

@@ -4,7 +4,7 @@ import { Load } from '../components/Load'
 
 //Tipagem do contexto
 interface UserType {
-    uid: string;
+    user: FirebaseAuthTypes.User
 }
 
 // definindo tipagem para receber os componentes filhos
@@ -16,7 +16,7 @@ type UserContextProviderProps = {
 export const UserContext = createContext<UserType>({} as UserType)
 
 export function UserContextProvider({ children }: UserContextProviderProps) {
-    const [user, setUser] = useState<FirebaseAuthTypes.User>()
+    const [user, setUser] = useState<FirebaseAuthTypes.User | null>()
     const [loading, setLoading] = useState(true)
 
     //regras de negócio
@@ -27,7 +27,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
             setUser(response)
             //setTokenUser(responser.uid)
             setLoading(false)
-            console.log(response)
+            console.log('setando',response)
         })
 
     }, [])
@@ -38,7 +38,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
 
     //retornando o provider
     return (
-        <UserContext.Provider value={user} >
+        <UserContext.Provider value={{user}} >
             {children}
         </UserContext.Provider>
     )
