@@ -21,7 +21,7 @@ export function Diary(){
   const [description, setDescription] = useState('');
 
   //consumindo o contexto do User
-  const {uid} = useUser()
+  const {user} = useUser()
 
 
   function handleOpenModalDiaryDetail(orderId: string){
@@ -40,7 +40,7 @@ export function Diary(){
     const subscriber = firestore()
     .collection('diary')
     //.orderBy('createdAt', 'desc')
-    .where('uidUser', '==', uid)
+    .where('uidUser', '==', user.uid)
     .onSnapshot(snapshot => {
         const data = snapshot.docs.map(doc => {
             const { createdAt, description, uidUser, updatedAt } = doc.data();
@@ -135,7 +135,7 @@ export function Diary(){
         title="Novo registro!"
         setShowModal={() => setShowModal(false)}
         data={{
-          uidUser: uid,   
+          uidUser: user.uid,   
           description
         }}
       >

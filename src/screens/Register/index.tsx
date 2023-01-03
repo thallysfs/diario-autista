@@ -191,6 +191,12 @@ export function Register(){
         });
       })
 
+      //atualizando nome do usuário
+      //pegando usuário logado atualmente
+      // var user = firebase.auth().currentUser;
+      // user?.updateProfile({ displayName: })
+      // .then(()=>{ console.log("url atualizada")})
+      // .catch((error) =>{ console.log(error)})
 
       })
     .catch(error => {

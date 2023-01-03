@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect, useContext, useState, useRef, useCallback } from 'react'
 import auth from '@react-native-firebase/auth'
-import {Alert, Image} from 'react-native'
+import {Alert} from 'react-native'
+import { UserContext } from '../../context/UserContext';
+import { firebase } from '@react-native-firebase/storage';
+import { useFocusEffect } from '@react-navigation/native';
+
 import {
     Avatar, 
     Box, 
@@ -8,17 +12,17 @@ import {
     Icon, 
     IconButton, 
     Text, 
+    Image
 } from 'native-base'
+
 import { Feather } from '@expo/vector-icons';
 import LogoPng from '../../assets/logo.png'
-
-interface Props {
-    avatar: string;
-    name: string;
-}
+import GenericUserPng from '../../assets/user.png'
 
 
-export function Header({ avatar, name} : Props){
+export function Header(){
+  const { user } = useContext(UserContext)
+  const [photo, setPhoto] = useState('')
 
   function handleLogout(){
     auth()
@@ -29,15 +33,35 @@ export function Header({ avatar, name} : Props){
         })
   }
 
+  //pegar imagem do usuário
+  async function getImage() {
+    const urlImage = await firebase.storage().ref(user.photoURL).getDownloadURL()
+    //const urlImage = await refImage.getDownloadURL();
+    console.log('urlimage', urlImage)
+    setPhoto(urlImage)
+  }
+
+  useFocusEffect(useCallback(()=>{
+      getImage()
+
+      console.log('olha o useFocus ai gente!')
+    },[])
+    
+  )
+
   return(
     <Box paddingTop="10" background="secondary.200">
       <HStack space={3} justifyContent="space-between">
         <Box marginLeft={5}>
-            <Avatar size="lg" source={{ uri: avatar}}/>
+          {
+            photo
+            ? <Avatar size="lg" source={{ uri: photo }} />
+            : <Image source={GenericUserPng} width={60} height={60} alt="imagem genérica de usuário" />
+          }      
         </Box>
         <Box marginRight="70">
             <Text fontFamily="body" fontSize={18}>Olá,</Text>
-            <Text fontFamily="Poppins_600SemiBold" fontSize={20}>{name}</Text>
+            <Text fontFamily="Poppins_600SemiBold" fontSize={20}>{user.displayName}Teste</Text>
         </Box>
         <Box>
         <IconButton icon={<Icon as={Feather} name='log-out' />} borderRadius="full" _icon={{
@@ -57,7 +81,7 @@ export function Header({ avatar, name} : Props){
         />
         </Box>
         <Box marginRight="18">
-            <Image source={LogoPng}  style={{ width: 72, height:48}}/>
+            <Image source={LogoPng} alt="logo" style={{ width: 72, height:48}}/>
         </Box>
       </HStack>
     </Box>

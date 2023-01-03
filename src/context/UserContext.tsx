@@ -24,10 +24,9 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
         //verifica se o usuário está autenticado
         auth()
         .onAuthStateChanged(response => {
-            setUser(response)
             //setTokenUser(responser.uid)
+            setUser(response)
             setLoading(false)
-            console.log('setando',response)
         })
 
     }, [])

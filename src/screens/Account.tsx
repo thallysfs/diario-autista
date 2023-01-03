@@ -3,7 +3,7 @@ import {Box, Text, Center, VStack, Image, Button, Pressable, useToast} from 'nat
 import * as ImagePicker from 'expo-image-picker';
 import { UserContext } from '../context/UserContext'
 import storage from '@react-native-firebase/storage'
-import firestore from '@react-native-firebase/firestore'
+import { firebase } from '@react-native-firebase/auth'; '@react-native-firebase/auth'
 
 
 import UserImg from '../assets/user.png'
@@ -12,9 +12,10 @@ import { Toast } from '../components/Toast';
 
 export function Account(){
   const [image, setImage] = useState('')
+  const [pathImage, setPathImage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [fullPath, setFullPath] = useState('')
-  const { uid } = useContext(UserContext)
+
+  const { user } = useContext(UserContext)
   const toast = useToast();
 
   async function handlePickImage() {
@@ -52,13 +53,11 @@ export function Account(){
 
     setIsLoading(true)
 
-    const fileName = new Date().getTime() + '_' + uid;
+    const fileName = new Date().getTime() + '_' + user.email;
     const MIME = image.match(/\.(?:.(?!\.))+$/)
-    const reference = storage().ref(`/images/${fileName}.${MIME}`);
+    const reference = storage().ref(`/images/${fileName}${MIME}`);
 
-    console.log(MIME)
-
-    const teste = reference
+      reference
       .putFile(image)
       .then((res)=> {
         toast.show({
@@ -72,16 +71,13 @@ export function Account(){
                     />
           }
         });
-        //pegando retorno do upload, salvando o caminho que a imgem fica
-        setFullPath(res.metadata.fullPath)
-
+        
+        //pegando usuário logado atualmente
+        var user = firebase.auth().currentUser;
         //atualizando tabela de usuário com o FullPath
-        // firestore()
-        //   .collection('users')
-        //   //.doc('imagePath')
-        //   .update({
-        //     imagePath: res.metadata.fullPath
-        //   })
+        user?.updateProfile({ photoURL: res.metadata.fullPath})
+        .then(()=>{ console.log("url atualizada")})
+        .catch((error) =>{ console.log(error)})
 
       })
       .catch((error) => {

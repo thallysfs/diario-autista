@@ -49,7 +49,7 @@ export function Home(){
       axios.get('https://www.canalautismo.com.br/categoria/noticia/feed')
         .then(response => {
           const json = new XMLParser().parseFromString(response.data)
-          console.log(json)
+          //console.log(json)
         })
 
 
