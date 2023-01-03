@@ -11,11 +11,11 @@ import { useEffect } from 'react';
 export function Routes(){
     //chamando o hook para pegar o valor da variável, desestruturando para pegar o uid que está dentro de "user"
     const { user } = useUser()
-    console.log('uid', user.uid)
+    console.log('uid', user?.uid)
 
     return(
         <NavigationContainer>
-            { user.uid ? <AppRoutes /> : <AuthRoutes /> }
+            { user?.uid ? <AppRoutes /> : <AuthRoutes /> }
         </NavigationContainer>
 
     )

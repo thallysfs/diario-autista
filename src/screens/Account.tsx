@@ -71,13 +71,14 @@ export function Account(){
                     />
           }
         });
-        
+    
         //pegando usuário logado atualmente
         var user = firebase.auth().currentUser;
         //atualizando tabela de usuário com o FullPath
         user?.updateProfile({ photoURL: res.metadata.fullPath})
         .then(()=>{ console.log("url atualizada")})
         .catch((error) =>{ console.log(error)})
+        
 
       })
       .catch((error) => {

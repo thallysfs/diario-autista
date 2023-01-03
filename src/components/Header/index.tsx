@@ -44,7 +44,6 @@ export function Header(){
   useFocusEffect(useCallback(()=>{
       getImage()
 
-      console.log('olha o useFocus ai gente!')
     },[])
     
   )
