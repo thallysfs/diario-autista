@@ -21,7 +21,7 @@ export function Toast({description, title, colorBg, iconName}: Props){
             {title}
           </Text>
         </HStack>
-        <Text px="6" color="lightText" marginBottom={2}>
+        <Text px="6" marginBottom={2}>
           {description}
         </Text>
       </VStack>
