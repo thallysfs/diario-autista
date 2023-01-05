@@ -41,6 +41,8 @@ export function Diary(){
     .collection('diary')
     //.orderBy('createdAt', 'desc')
     .where('uidUser', '==', user.uid)
+    //adicionar condição de data !!!!!!!!!!!!
+    //.where('uidUser', '==', user.uid)
     .onSnapshot(snapshot => {
         const data = snapshot.docs.map(doc => {
             const { createdAt, description, uidUser, updatedAt } = doc.data();
@@ -53,7 +55,7 @@ export function Diary(){
               updatedAt: dateFormat(updatedAt)
             }
           })
-          
+
         setDailyRecords(data);
 
         setLoading(false);
@@ -68,6 +70,7 @@ export function Diary(){
   return(
     <>
       <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
+
       <Box background="secondary.200">  
         <Text 
           textAlign="center"
@@ -151,7 +154,6 @@ export function Diary(){
           }} 
           mb="5"
           h={80}
-          value={description} 
           onChangeText={text => setDescription(text)} 
         />
       </CustomModal>

@@ -37,7 +37,7 @@ export function Header(){
   async function getImage() {
     const urlImage = await firebase.storage().ref(user.photoURL).getDownloadURL()
     //const urlImage = await refImage.getDownloadURL();
-    console.log('urlimage', urlImage)
+    //console.log('urlimage', urlImage)
     setPhoto(urlImage)
   }
 
@@ -60,7 +60,7 @@ export function Header(){
         </Box>
         <Box marginRight="70">
             <Text fontFamily="body" fontSize={18}>Olá,</Text>
-            <Text fontFamily="Poppins_600SemiBold" fontSize={20}>{user.displayName}Teste</Text>
+            <Text fontFamily="Poppins_600SemiBold" fontSize={20}>{user.displayName}</Text>
         </Box>
         <Box>
         <IconButton icon={<Icon as={Feather} name='log-out' />} borderRadius="full" _icon={{

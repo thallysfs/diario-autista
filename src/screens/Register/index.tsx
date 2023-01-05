@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
-import { Alert, Image, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView } from 'react-native'
-import { Box, Text, Button, HStack, Stack, Input, Icon, FormControl, useToast } from 'native-base'
+import { Image, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
+import { Box, Text, Button, HStack, Stack, Input, Icon, FormControl, useToast, ScrollView } from 'native-base'
 import RegisterSvg from '../../assets/cadastro.svg'
 import LogoPng from '../../assets/logo.png'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -17,6 +17,7 @@ interface Params {
 
 interface UserData {
   idUser: string;
+  name: string;
   childName: string;
   ageChild: string;
   responsible: string;
@@ -29,7 +30,7 @@ export function Register(){
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [formData, setFormData] = useState<UserData>({} as UserData);
-  const [uid, setUid] = useState('');
+  const [name, setName] = useState('');
 
   const [showPassword, setShow] = useState(false);
   const [errors, setErrors] = useState({});
@@ -48,6 +49,15 @@ export function Register(){
     setLoading(true)
     
     //Validações
+    if (name === '') {
+      setErrors({...errors,
+        name: 'Nome é obrigatório'
+      });
+      //habilitando botão
+      setLoading(false);
+      return false;
+    }
+    
     if (email === '') {
       setErrors({...errors,
         email: 'Email é obrigatório'
@@ -173,6 +183,14 @@ export function Register(){
           console.log(data)
         //habilitando botão
         setLoading(false);
+
+      //atualizando nome do usuário
+      //pegando usuário logado atualmente
+      var user = firebase.auth().currentUser;
+      user?.updateProfile({ displayName: name})
+      .then(()=>{ console.log("nome atualizado")})
+      .catch((error) =>{ console.log(error)})
+
         navigation.navigate('Confirm')
       })
       .catch(error => {
@@ -190,15 +208,7 @@ export function Register(){
           }
         });
       })
-
-      //atualizando nome do usuário
-      //pegando usuário logado atualmente
-      // var user = firebase.auth().currentUser;
-      // user?.updateProfile({ displayName: })
-      // .then(()=>{ console.log("url atualizada")})
-      // .catch((error) =>{ console.log(error)})
-
-      })
+    })
     .catch(error => {
       console.log(error.code);
 
@@ -247,7 +257,7 @@ export function Register(){
   return(
     <ScrollView>    
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView  behavior="position" style={{flex: 1}}>
+      <KeyboardAvoidingView   style={{flex: 1}}>
       <Box>
         <Box background="secondary.200" paddingTop={5} height={200}>
           <HStack space={2} justifyContent="center">
@@ -270,6 +280,21 @@ export function Register(){
         {/* Corpo */}
         <Box background="secondary.100" height="100%" paddingTop={100}>  
           <Stack marginRight={6} marginLeft={5} space="5">
+          <FormControl isRequired isInvalid={'email' in errors}>
+              <Input 
+                variant="outline" 
+                placeholder="Nome" 
+                autoCorrect={false} 
+                bg='white'
+                onChangeText={setName}
+                value={name}
+              />
+              {
+                email === ''
+                ? <FormControl.ErrorMessage leftIcon={<Icon as={<MaterialIcons name='error' />} size="xs" />}>{errors.email}</FormControl.ErrorMessage>
+                : <></>
+              }              
+            </FormControl>
             <FormControl isRequired isInvalid={'email' in errors}>
               <Input 
                 variant="outline" 
@@ -413,7 +438,8 @@ export function Register(){
             }} _spinner={{
               color: "black"
             }}
-            isLoadingText="Enviando..."  
+            isLoadingText="Enviando..."
+            mb={10}  
           >
               <Text 
                 color="tertiary.50" 

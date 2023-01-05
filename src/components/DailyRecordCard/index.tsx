@@ -17,7 +17,7 @@ interface Props extends IPressableProps {
 export function DailyRecordCard({data, ...rest}: Props){
 
     return(
-        <Pressable {...rest} mt={4} height={65} rounded="md" marginX={5}>
+        <Pressable {...rest} mt={2} height={65} rounded="md" marginX={2}>
         <HStack 
             flex={1} 
             bg='white'
