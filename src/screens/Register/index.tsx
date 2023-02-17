@@ -169,6 +169,7 @@ export function Register(){
         nameChild: formData.childName,
         responsible: formData.responsible,
         therapist: formData.therapist,
+        isProfessional: false
 
       })
       .then(data =>{

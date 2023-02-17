@@ -30,7 +30,7 @@ export function Skills(){
   const {idQs, idQl, idQg, idQm, setIdQs, setIdQl, setIdQg, setIdQm} = useQuestions()
 
   //contexto
-  const {uid} = useUser()
+  const {user} = useUser()
 
   function handleSave() {
 
@@ -42,7 +42,7 @@ export function Skills(){
     .collection('test')
     .add({
       date: firestore.FieldValue.serverTimestamp(),
-      uidUser: uid,
+      uidUser: user.uid,
       selectedAge: selectedAge,
       questionsIds: allquestions 
     })

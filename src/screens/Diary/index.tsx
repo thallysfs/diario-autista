@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import  firestore  from '@react-native-firebase/firestore';
-import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, TextArea} from 'native-base'
+import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, TextArea, Pressable} from 'native-base'
 import { Feather } from '@expo/vector-icons';
 import { Load } from '../../components/Load'
+
 
 import { DailyRecordCard, DiaryData} from '../../components/DailyRecordCard'
 import { dateFormat } from '../../Utils/firestoreDateFormat';
@@ -20,9 +21,12 @@ export function Diary(){
   const [showModalEditing, setShowModalEditing] = useState(false);
   const [description, setDescription] = useState('');
 
+  const [date, setDate] = useState(new Date());
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [showSelectedDate, setShowSelectedDate] = useState(false);
+
   //consumindo o contexto do User
   const {user} = useUser()
-
 
   function handleOpenModalDiaryDetail(orderId: string){
     //filtrar o array
@@ -33,7 +37,11 @@ export function Diary(){
 
   }
 
+  function handleCalendar(){
+    setShowCalendar(!showCalendar)
+  }
 
+  
   useEffect(()=>{
     setLoading(true);
     //lendo registros no diário
@@ -83,14 +91,34 @@ export function Diary(){
       </Box>
       <VStack flex={1} paddingBottom={6} marginRight={2} marginLeft={2}>
         <HStack alignItems="center" justifyContent="center" marginTop={4} marginBottom={5}>
-          <Text
-            fontSize="sm" 
-            color="black"
-            fontFamily="Poppins_600SemiBold"
-          > 
-            - Agosto -
-          </Text>
+          <Pressable onPress={handleCalendar} >
+            <HStack>
+              <Icon 
+                as={Feather}
+                name="calendar"
+                size={19}
+                color="black"
+              />
+              <Text 
+                ml={2}
+                fontSize="sm" 
+                color="black"
+                fontFamily="Poppins_600SemiBold"
+              >Filtrar data</Text>
+            </HStack>
+          </Pressable>
+          {
+            showCalendar 
+            ?
+            <Text
+            />
+            : 
+            <></>
+          }
         </HStack>
+        {
+            showSelectedDate && <Text>Data escolhida: {date.toLocaleString}</Text>
+        }
 
         {
           loading 

@@ -2,6 +2,7 @@
   "expo": {
     "name": "diario-autista",
     "slug": "diario-autista",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "backgroundColor": "#E0E9F1"
@@ -9,6 +10,17 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7fecb611-f300-4d94-b0bb-7366cb37aff8"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    }
   }
 }
