@@ -30,6 +30,7 @@ export function Account(){
   const { user } = useContext(UserContext)
   const toast = useToast();
 
+
   function handleActiveProfile() {
     let prof = !isActive
 
@@ -44,10 +45,50 @@ export function Account(){
   }
   
   // Do form
-  const { control, handleSubmit, formState: {errors}} = useForm<FormDataProps>()
+  const { control, handleSubmit, reset, formState: {errors}} = useForm<FormDataProps>()
 
-  function handleSaveDataChildren() {
-    console.log()
+  // salvando registro de novas crianças
+  function handleSaveDataChildren({ name, birthday, responsible} : FormDataProps) {
+    firestore()
+      .collection('children')
+      .add({
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        birthday,
+        name,
+        responsible,
+        idUser: user.uid
+      })
+      .then( data => {
+        toast.show({
+          placement: "top",
+          render: () => {
+            return <Toast 
+                      colorBg='success.400' 
+                      title='Sucesso!' 
+                      description={'Cadastrado com sucesso'}
+                      iconName='check-circle'
+                    />
+          }
+        });
+
+        // zerar estados ou form
+        reset()
+      })
+      .catch((error) => {
+        toast.show({
+          placement: "top",
+          render: () => {
+            return <Toast 
+                      colorBg='error.400' 
+                      title='Erro' 
+                      description={`Erro ${error}`}
+                      iconName='error'
+                    />
+          }
+        });
+      })
+    
+    //console.log(name, birthday, responsible)
   }
 
   async function handlePickImage() {

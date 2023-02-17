@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import auth, { FirebaseAuthTypes} from '@react-native-firebase/auth'
 import { Load } from '../components/Load'
+import  firestore  from '@react-native-firebase/firestore';
 
 //Tipagem do contexto
 interface UserType {
@@ -18,6 +19,26 @@ export const UserContext = createContext<UserType>({} as UserType)
 export function UserContextProvider({ children }: UserContextProviderProps) {
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>()
     const [loading, setLoading] = useState(true)
+    const [isProfessional, setIsProfesional] = useState(false)
+
+    function onVerifyProfessional() {
+        // ler da tabela user
+        const subscriber = firestore()
+        .collection('users')
+        .where('idUser', '==', user?.uid)
+        .onSnapshot(snapshot => {
+            const data = snapshot.docs.map(doc => {
+                const { isProfessional} = doc.data();
+
+                return {
+                isProfessional
+                }
+            })
+            // guardando valores retornados
+            setIsProfesional(data[0].isProfessional)
+            //console.log("prof", data)
+        })
+    }
 
     //regras de negócio
     useEffect(()=>{
@@ -27,7 +48,8 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
             //setTokenUser(responser.uid)
             setUser(response)
             setLoading(false)
-        })
+        }),
+        onVerifyProfessional()
 
     }, [])
 
@@ -37,7 +59,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
 
     //retornando o provider
     return (
-        <UserContext.Provider value={{user}} >
+        <UserContext.Provider value={{user, isProfessional}} >
             {children}
         </UserContext.Provider>
     )
