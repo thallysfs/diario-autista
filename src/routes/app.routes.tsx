@@ -17,6 +17,7 @@ import { Skills } from '../screens/Skills';
 import { Graphic } from '../screens/Graphic';
 import { EndSkill } from '../screens/EndSkill';
 import { Account } from '../screens/Account';
+import { Records } from '../screens/Records';
 
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -120,20 +121,12 @@ export function AppRoutes(){
                 <Screen 
                     name='Conta'
                     component={Account}
-                    options={{
-                        tabBarButton: () => null,
-                        tabBarLabelPosition: 'below-icon',
-                        tabBarShowLabel: true,
-                        tabBarIcon: ({ size, color }) => 
-                        <Icon 
-                            as={Feather}
-                            name="pie-chart"
-                            size={35}
-                            color={color}
-                        />,
-                        tabBarLabel:'Gráficos'
-                        
-                    }}
+                    options={{ tabBarButton: () => null }}
+                />
+                                <Screen 
+                    name='Cadastros'
+                    component={Records}
+                    options={{ tabBarButton: () => null }}
                 />
             </Navigator>
         </QuestionContextProvider>

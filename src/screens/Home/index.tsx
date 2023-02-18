@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
+import  firestore  from '@react-native-firebase/firestore';
+import { UserContext } from '../../context/UserContext'
 import { Box, VStack, ScrollView, Text, Center, Icon, HStack } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios';
-import XMLParser from 'react-xml-parser';
+//import XMLParser from 'react-xml-parser';
 
 //import {dados197} from '../../Utils/dados'
-import  firestore from '@react-native-firebase/firestore';
 import { InfoBox } from '../../components/InfoBox';
 import { Feather } from '@expo/vector-icons';
 
 import Account from '../../assets/account.png'
 import Config from '../../assets/config.png'
 import Notebook from '../../assets/notebook.png'
+import Children from '../../assets/children.png'
+
 import { Header } from '../../components/Header';
 
 export function Home(){
-  const { navigate } = useNavigation() 
+  const { navigate } = useNavigation()
+  const { user } = useContext(UserContext)
+  const [isProfessional, setIsProfessional] = useState(false)
+
     // const m = dados197.split("|")
 
     // console.log("My array", m)
@@ -32,6 +38,26 @@ export function Home(){
     //   .then(data =>{
     //     console.log("ok")
     //   })
+
+    function checkIdProfessional() { 
+        // ler da tabela user
+        firestore()
+        .collection('users')
+        .where('idUser', '==', user?.uid)
+        .onSnapshot(snapshot => {
+            const data = snapshot.docs.map(doc => {
+                const { isProfessional} = doc.data();
+    
+                return {
+                isProfessional
+                }
+            })
+            // retornando
+            console.log("utilContext", data[0].isProfessional)
+            setIsProfessional(data[0].isProfessional)
+
+        })
+    }
 
     function GetFeed() {
       // const options = {
@@ -55,7 +81,6 @@ export function Home(){
 
     }
 
-
     function onRedirectAccount() {
       navigate('Conta')
     }    
@@ -66,10 +91,16 @@ export function Home(){
     
     function onRedirectDiary() {
       navigate('Diário')
+    }     
+    
+    function onRedirecRecords() {
+      navigate('Cadastros')
     }    
 
     useEffect(()=>{
-      GetFeed()
+      //GetFeed()
+      checkIdProfessional()
+
     },[])
 
 
@@ -81,6 +112,13 @@ export function Home(){
         <InfoBox name='Seus dados' image={Account} alt='configurações da conta' redirect={onRedirectAccount} />
         <InfoBox name='Configurações' image={Config} alt='engrenagem numa caixa' redirect={onRedirectConfiguration} />
         <InfoBox name='Registro diário' image={Notebook} alt='caderno com lápis' redirect={onRedirectDiary} />
+        {
+          isProfessional ? (
+            <InfoBox name='Ver Cadastros' image={Children} alt='criança brincando' redirect={onRedirecRecords} />
+          ) : (
+            <></>
+          )
+        }
       </VStack>
       <Center bg="white" marginTop={3} rounded={5} shadow="2" mx={5} pt={2}>
         <HStack>

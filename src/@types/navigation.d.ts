@@ -8,6 +8,7 @@ export declare global {
       Gráfico: undefined;
       Configurações: undefined;
       Conta: undefined;
+      Cadastros: undefined;
       FimTeste: {
         ageSelected: string;
       } 
