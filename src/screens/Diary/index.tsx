@@ -4,7 +4,6 @@ import  firestore  from '@react-native-firebase/firestore';
 import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, TextArea, Pressable} from 'native-base'
 import { Feather } from '@expo/vector-icons';
 import { Load } from '../../components/Load'
-import { useFocusEffect } from '@react-navigation/native';
 
 import { DailyRecordCard, DiaryData} from '../../components/DailyRecordCard'
 import { dateFormat } from '../../Utils/firestoreDateFormat';
@@ -21,8 +20,9 @@ export function Diary(){
   const [showModal, setShowModal] = useState(false);
   const [showModalEditing, setShowModalEditing] = useState(false);
   const [description, setDescription] = useState('');
+  const [refreshing, setRefreshing] = useState(false); 
 
-  const [date, setDate] = useState(new Date());
+  //const [date, setDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [showSelectedDate, setShowSelectedDate] = useState(false);
 
@@ -40,6 +40,11 @@ export function Diary(){
 
   function handleCalendar(){
     setShowCalendar(!showCalendar)
+  }
+
+  function onRefresh() {
+    setRefreshing(true)
+    onDiaryWithChild()
   }
 
   function onDiary() {
@@ -115,7 +120,8 @@ export function Diary(){
     } else{
       onDiary()
     }
-  }, [child])
+    setRefreshing(false)
+  }, [child, refreshing])
   
   return(
     <>
@@ -186,6 +192,12 @@ export function Diary(){
                   </Text>
               </Center>
           )}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
         /> 
         }
 
