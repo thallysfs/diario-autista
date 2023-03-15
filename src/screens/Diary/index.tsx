@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { RefreshControl } from 'react-native'
 import  firestore  from '@react-native-firebase/firestore';
 import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, TextArea, Pressable} from 'native-base'
 import { Feather } from '@expo/vector-icons';
 import { Load } from '../../components/Load'
-
+import { useFocusEffect } from '@react-navigation/native';
 
 import { DailyRecordCard, DiaryData} from '../../components/DailyRecordCard'
 import { dateFormat } from '../../Utils/firestoreDateFormat';
@@ -26,7 +27,7 @@ export function Diary(){
   const [showSelectedDate, setShowSelectedDate] = useState(false);
 
   //consumindo o contexto do User
-  const {user} = useUser()
+  const {user, child} = useUser()
 
   function handleOpenModalDiaryDetail(orderId: string){
     //filtrar o array
@@ -41,8 +42,7 @@ export function Diary(){
     setShowCalendar(!showCalendar)
   }
 
-  
-  useEffect(()=>{
+  function onDiary() {
     setLoading(true);
     //lendo registros no diário
     const subscriber = firestore()
@@ -71,9 +71,51 @@ export function Diary(){
     
 
     return subscriber;
+  }
 
-}, [])
+  function onDiaryWithChild() {
+      setLoading(true);
+      //lendo registros no diário
+      const subscriber = firestore()
+      .collection('diary')
+      .where('uidUser', '==', user.uid)
+      .where('idChild', '==', child.childId)
+      .onSnapshot(snapshot => {
+          const data = snapshot.docs.map(doc => {
+              const { createdAt, description, uidUser, updatedAt, idChild } = doc.data();
+  
+              return {
+                id: doc.id,
+                createdAt: dateFormat(createdAt),
+                description,
+                uidUser,
+                updatedAt: dateFormat(updatedAt),
+                idChild
+              }
+            })
+          setDailyRecords(data);
+  
+          setLoading(false);
+      })
+  }
+  
+  // useFocusEffect(useCallback(()=>{
+  //   if(child.childId){
+  //     onDiaryWithChild()
+  //   } else{
+  //     onDiary()
+  //   }
 
+    
+  //   },[])
+  // )
+  useEffect(()=>{
+    if(child.childId){
+      onDiaryWithChild()
+    } else{
+      onDiary()
+    }
+  }, [child])
   
   return(
     <>
@@ -86,7 +128,7 @@ export function Diary(){
           fontWeight={500}
           fontSize={30}
         >
-          Diário      
+          Diário
         </Text>
       </Box>
       <VStack flex={1} paddingBottom={6} marginRight={2} marginLeft={2}>
@@ -110,14 +152,13 @@ export function Diary(){
           {
             showCalendar 
             ?
-            <Text
-            />
+            <Text/>
             : 
             <></>
           }
         </HStack>
         {
-            showSelectedDate && <Text>Data escolhida: {date.toLocaleString}</Text>
+          showSelectedDate && <Text>Data escolhida: {date.toLocaleString}</Text>
         }
 
         {
@@ -167,7 +208,8 @@ export function Diary(){
         setShowModal={() => setShowModal(false)}
         data={{
           uidUser: user.uid,   
-          description
+          description,
+          idChild: child.childId
         }}
       >
         <TextArea
@@ -209,8 +251,6 @@ export function Diary(){
         </TextArea>
       </CustomModal>
   
-
-
       </VStack>
     </>
   )

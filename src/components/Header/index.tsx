@@ -21,7 +21,7 @@ import GenericUserPng from '../../assets/user.png'
 
 
 export function Header(){
-  const { user } = useContext(UserContext)
+  const { user, child } = useContext(UserContext)
   const [photo, setPhoto] = useState('')
 
   function handleLogout(){
@@ -60,7 +60,10 @@ export function Header(){
         </Box>
         <Box marginRight="70">
             <Text fontFamily="body" fontSize={18}>Olá,</Text>
-            <Text fontFamily="Poppins_600SemiBold" fontSize={20}>{user.displayName}</Text>
+            <Text fontFamily="Poppins_600SemiBold" fontSize={20}>
+              {user.displayName}
+            </Text>
+            <Text fontFamily="mono" fontSize={12}>{child.name ? child.name : ''}</Text>
         </Box>
         <Box>
         <IconButton icon={<Icon as={Feather} name='log-out' />} borderRadius="full" _icon={{

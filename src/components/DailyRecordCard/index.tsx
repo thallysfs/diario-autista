@@ -8,6 +8,7 @@ export interface DiaryData{
     description: string;
     uidUser: string;
     updatedAt?: string;
+    idChild?: string;
 }
 
 interface Props extends IPressableProps {
@@ -36,7 +37,7 @@ export function DailyRecordCard({data, ...rest}: Props){
                     fontFamily="Poppins_600SemiBold"
                     paddingBottom={1} 
                 >
-                    Registrado em: 
+                    Registrado em:
                 </Text>
                 <HStack alignItems="center">
                 <Icon 

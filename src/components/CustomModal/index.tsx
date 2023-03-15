@@ -40,14 +40,10 @@ export function CustomModal({
       .add({
         createdAt: firestore.FieldValue.serverTimestamp(),
         uidUser: data.uidUser,
-        description: data.description,  
+        description: data.description,
+        idChild: data.idChild  
       })
       .then(data =>{
-        console.log(data)
-
-        //fechando modal
-        setShowModal(false)
-
         //toast de confirmação
         toast.show({
           placement: "top",
@@ -60,6 +56,9 @@ export function CustomModal({
             />
           }
         });
+
+        //fechando modal
+        setShowModal(false)
       })
       .catch(error => {
         console.log(error.code);

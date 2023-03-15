@@ -1,5 +1,4 @@
 import {Box, Text, HStack, VStack, Pressable, IPressableProps} from 'native-base'
-import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { useState } from 'react';
 
 import { convertBirthdayTodate } from '../Utils/convertBirthdayTodate'
@@ -9,12 +8,12 @@ export interface DataChildren extends IPressableProps {
   name: string;
   responsible: string;
   birthday: string;
-  onSelect?: (id: string) => void
+  selected: boolean;
+  onSelect?: (value: string) => void
 }
 
 
-export function RadioCard({id, name, responsible, birthday, onSelect, ...rest} : DataChildren){
-  const [userOption, setUserOption] = useState(null);
+export function RadioCard({id, name, responsible, birthday, selected, onSelect, ...rest} : DataChildren){
 
   return (
     <Box
@@ -31,6 +30,7 @@ export function RadioCard({id, name, responsible, birthday, onSelect, ...rest} :
       <Pressable
         key={id}
         borderRadius={12}
+        bg={ selected  ? 'light.200' : 'white'}
         _pressed={{ 
           bg: 'light.200',
           borderWidth:"1",

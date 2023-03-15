@@ -1,19 +1,25 @@
 import { useContext, useEffect, useState } from 'react';
-import {Box, Text, Center, FlatList} from 'native-base'
+import {Box, Text, Center, FlatList, useToast} from 'native-base'
 import  firestore  from '@react-native-firebase/firestore';
 
 import { MyButton } from '../components/MyButton'
+import { Toast } from '../components/Toast'
 
 import ChildrenSvg from '../assets/kids.svg'
-import { UserContext } from '../context/UserContext';
+import { UserContext, Child } from '../context/UserContext';
 import { RadioCard, DataChildren } from '../components/RadioCard';
 
 
 export function Records(){
   const [children, setChildren] = useState<DataChildren[]>([])
-  const [option, setOption] = useState('');
+  const [option, setOption] = useState<Child>({} as Child);
 
-  const { user } = useContext(UserContext)
+  const { user, setChild } = useContext(UserContext)
+  const toast = useToast();
+
+  const handleSelect = (value: Child) => {
+    setOption(value);
+  };
 
   function onGetChildren() {
     firestore()
@@ -38,8 +44,20 @@ export function Records(){
   }
 
   function handleSave() {
-    console.log("dados", children)
-    console.log("option", option)
+    //salvar id children
+    setChild(option)
+    setOption({childId: '', name: ''})
+    toast.show({
+      placement: "top",
+      render: () => {
+        return <Toast 
+                  colorBg='success.400' 
+                  title='Sucesso!' 
+                  description={'Registro selecionado'}
+                  iconName='check-circle'
+                />
+      }
+    });
   }
 
   useEffect(()=>{
@@ -68,7 +86,8 @@ export function Records(){
               name={item.name}
               responsible={item.responsible}
               birthday={item.birthday}
-              onPress={() => setOption(item.id)}
+              onPress={() => setOption({childId: item.id, name: item.name})}
+              selected={option.childId === item.id}
             />
           )}
           showsVerticalScrollIndicator={false}

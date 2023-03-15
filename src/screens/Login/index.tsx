@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import auth from '@react-native-firebase/auth';
-import { Box, Button, Center, Text, Icon, HStack, Stack, FormControl, Input, Image } from 'native-base'
-import { Alert, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, View } from 'react-native'
+import { Box, Button, Text, Icon, HStack, Stack, FormControl, Input, Image } from 'native-base'
+import { Alert, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons';
 import LogoPng from '../../assets/logo.png'
 import { useNavigation } from '@react-navigation/native';
 import LoginSvg from '../../assets/login.svg'
-import { Load } from '../../components/Load'
 
 export function Login(){
     const [isLoading, setIsLoading] = useState(false)

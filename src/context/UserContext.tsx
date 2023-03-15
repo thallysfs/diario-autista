@@ -3,8 +3,14 @@ import auth, { FirebaseAuthTypes} from '@react-native-firebase/auth'
 import { Load } from '../components/Load'
 
 //Tipagem do contexto
+export interface Child {
+    childId: string
+    name: string
+}
 interface UserType {
     user: FirebaseAuthTypes.User
+    child: Child
+    setChild: (value: Child) => void
 }
 
 // definindo tipagem para receber os componentes filhos
@@ -17,6 +23,7 @@ export const UserContext = createContext<UserType>({} as UserType)
 
 export function UserContextProvider({ children }: UserContextProviderProps) {
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>()
+    const [child, setChild] = useState<Child>({} as Child)
     const [loading, setLoading] = useState(true)
 
     //regras de negócio
@@ -37,7 +44,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
 
     //retornando o provider
     return (
-        <UserContext.Provider value={{user}} >
+        <UserContext.Provider value={{user, child, setChild}} >
             {children}
         </UserContext.Provider>
     )
