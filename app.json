@@ -3,11 +3,13 @@
     "name": "diario-autista",
     "slug": "diario-autista",
     "icon": "./assets/icon.png",
+    "scheme": "DiarioAutista",
     "splash": {
       "image": "./assets/splash.png",
+      "resizeMode": "automatic",
       "backgroundColor": "#E0E9F1"
     },
-    "version": "1.0.0",
+    "version": "1.1.0",
     "assetBundlePatterns": [
       "**/*"
     ],

@@ -65,7 +65,7 @@ export function Records(){
   },[])
 
   return (
-    <Box px={8} flex={1}>
+    <Box px={5} flex={1}>
       <Center pt={9} flex={0.9}>
         <Text 
           textAlign="center"
@@ -77,7 +77,8 @@ export function Records(){
             Lista de crianças
           </Text>
         <ChildrenSvg height={214} width={320} />
-        <FlatList 
+        <FlatList
+          mt={3} 
           data={children}
           keyExtractor={item => item.id}
           renderItem={({item})=> (

@@ -22,13 +22,14 @@ export function RadioCard({id, name, responsible, birthday, selected, onSelect, 
       borderColor="black"
       borderRadius={12}
       background="white"
-      maxHeight={55}
+      height={65}
       width={80}
       shadow={2}
-      mt={5}  
+      mt={2}  
     >
       <Pressable
         key={id}
+        flex={1}
         borderRadius={12}
         bg={ selected  ? 'light.200' : 'white'}
         _pressed={{ 
@@ -45,22 +46,24 @@ export function RadioCard({id, name, responsible, birthday, selected, onSelect, 
             <Text
               ml={2}
               fontFamily="heading"
-              fontSize={14}
+              fontSize={16}
             >
               {name}
             </Text>
             <HStack>
               <Text
-              ml={2}
+                ml={2}
+                mt={2}
                 fontFamily="body"
-                fontSize={10}
+                fontSize={12}
               >
                 Responsável: {responsible}
               </Text>
               <Text
-              ml={2}
+                ml={2}
+                mt={2}
                 fontFamily="body"
-                fontSize={10}
+                fontSize={12}
               >
                 {convertBirthdayTodate(birthday)} ano(s)
               </Text>

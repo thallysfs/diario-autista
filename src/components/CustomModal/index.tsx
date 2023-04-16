@@ -8,8 +8,8 @@ interface Props extends IModalProps {
     title: string;
     children: ReactNode;
     updatedAt?: string | undefined;
-    isEditing?: boolean;
     showModal?: boolean;
+    typeModal: 'save' | 'edit' | 'date'
     setShowModal: (showModal: boolean)=> void
     data: {}
 }
@@ -20,9 +20,9 @@ export function CustomModal({
     title, 
     children, 
     updatedAt, 
-    isEditing=false,
     showModal=false, 
-    setShowModal, 
+    setShowModal,
+    typeModal, 
     data, 
     ...rest } 
 : Props){
@@ -30,7 +30,7 @@ export function CustomModal({
 
   function onSave(data: any){
     //salvando dados da criança na tabela de Users
-    if(isEditing){
+    if(typeModal == 'edit'){
       //atualiza descrição existente
     }
     else{
@@ -97,11 +97,21 @@ export function CustomModal({
           <Button variant="ghost" colorScheme="blueGray" onPress={()=>setShowModal(showModal)}>
             Cancelar
           </Button>
-          <Button onPress={() => onSave(data)}>
-            {
-              isEditing ? 'Editar' : 'Salvar'
-            }
-          </Button>
+          {
+            typeModal != 'date' 
+            ? (
+              <Button onPress={() => onSave(data)}>
+                {
+                  typeModal == 'edit' ? 'Editar' : 'Salvar'
+                }
+              </Button>
+            ) 
+            : (
+              <Button onPress={()=>setShowModal(showModal)}>
+                Fechar
+              </Button>
+            )
+          }
         </Button.Group>
       </Modal.Footer>
     </Modal.Content>

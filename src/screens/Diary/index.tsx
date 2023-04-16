@@ -4,6 +4,7 @@ import  firestore  from '@react-native-firebase/firestore';
 import {Box, Center, FlatList, HStack, Text, VStack, Icon, Button, TextArea, Pressable} from 'native-base'
 import { Feather } from '@expo/vector-icons';
 import { Load } from '../../components/Load'
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 import { DailyRecordCard, DiaryData} from '../../components/DailyRecordCard'
 import { dateFormat } from '../../Utils/firestoreDateFormat';
@@ -12,6 +13,27 @@ import { CustomModal } from '../../components/CustomModal';
 import { useUser } from '../../hooks/useUser'
 import { Header } from '../../components/Header';
 
+LocaleConfig.locales['pt-br'] = {
+  monthNames: [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Juljo',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro'
+  ],
+  monthNamesShort: ['Jan.', 'Fev.', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul.', 'Ago', 'Set.', 'Out.', 'Nov.', 'Dez.'],
+  dayNames: ['Domingo', 'Sewunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+  dayNamesShort: ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sab.'],
+  today: "Hoje"
+};
+LocaleConfig.defaultLocale = 'pt-br';
 
 export function Diary(){
   const [loading, setLoading] = useState(false)
@@ -21,10 +43,10 @@ export function Diary(){
   const [showModalEditing, setShowModalEditing] = useState(false);
   const [description, setDescription] = useState('');
   const [refreshing, setRefreshing] = useState(false); 
+  const [selected, setSelected] = useState('');
 
   //const [date, setDate] = useState(new Date());
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [showSelectedDate, setShowSelectedDate] = useState(false);
+  const [showModalCalendar, setShowModalCalendar] = useState(false);
 
   //consumindo o contexto do User
   const {user, child} = useUser()
@@ -38,9 +60,6 @@ export function Diary(){
 
   }
 
-  function handleCalendar(){
-    setShowCalendar(!showCalendar)
-  }
 
   function onRefresh() {
     setRefreshing(true)
@@ -104,16 +123,6 @@ export function Diary(){
       })
   }
   
-  // useFocusEffect(useCallback(()=>{
-  //   if(child.childId){
-  //     onDiaryWithChild()
-  //   } else{
-  //     onDiary()
-  //   }
-
-    
-  //   },[])
-  // )
   useEffect(()=>{
     if(child.childId){
       onDiaryWithChild()
@@ -121,7 +130,8 @@ export function Diary(){
       onDiary()
     }
     setRefreshing(false)
-  }, [child, refreshing])
+    console.log("🚀 ~ file: index.tsx:26 ~ Diary ~ selected:", selected)
+  }, [child, refreshing, selected])
   
   return(
     <>
@@ -139,7 +149,7 @@ export function Diary(){
       </Box>
       <VStack flex={1} paddingBottom={6} marginRight={2} marginLeft={2}>
         <HStack alignItems="center" justifyContent="center" marginTop={4} marginBottom={5}>
-          <Pressable onPress={handleCalendar} >
+          <Pressable onPress={() => setShowModalCalendar(true)} >
             <HStack>
               <Icon 
                 as={Feather}
@@ -155,16 +165,9 @@ export function Diary(){
               >Filtrar data</Text>
             </HStack>
           </Pressable>
-          {
-            showCalendar 
-            ?
-            <Text/>
-            : 
-            <></>
-          }
         </HStack>
         {
-          showSelectedDate && <Text>Data escolhida: {date.toLocaleString}</Text>
+          //selected && <Text>Data escolhida: </Text>
         }
 
         {
@@ -217,6 +220,7 @@ export function Diary(){
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         title="Novo registro!"
+        typeModal='save'
         setShowModal={() => setShowModal(false)}
         data={{
           uidUser: user.uid,   
@@ -246,7 +250,7 @@ export function Diary(){
         onClose={() => setShowModalEditing(false)}
         title={page?.createdAt}
         setShowModal={() => setShowModalEditing(false)}
-        isEditing={true}
+        typeModal='edit'
         updatedAt={page?.updatedAt}
       >
         <TextArea
@@ -262,7 +266,24 @@ export function Diary(){
           {page?.description}
         </TextArea>
       </CustomModal>
-  
+    
+      <CustomModal
+        isOpen={showModalCalendar}
+        onClose={()=> setShowModalCalendar(false)}
+        title="Calenário"
+        typeModal='date'
+        setShowModal={()=> setShowModalCalendar(false)}
+      >
+        <Calendar
+          onDayPress={day => {
+          setSelected(day.dateString);
+        }}
+          markedDates={{
+          [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
+        }}
+        />
+      </CustomModal>
+
       </VStack>
     </>
   )
