@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import  firestore  from '@react-native-firebase/firestore';
 import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack, useToast } from 'native-base'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 //chamar meu hook de Questions
 import { useQuestions } from '../../hooks/useQuestions'
 
@@ -21,6 +21,7 @@ interface SkillProps {
 
 
 export function Skills(){
+  const {user, child} = useUser()
   const [selectedAge, setSelectedAge] = useState("");
   const [skillQuestion, setSkillQuestion] = useState<SkillProps[]>([])
   const [loading, setLoading] = useState(false)
@@ -30,7 +31,6 @@ export function Skills(){
   const {idQs, idQl, idQg, idQm, setIdQs, setIdQl, setIdQg, setIdQm} = useQuestions()
 
   //contexto
-  const {user} = useUser()
 
   function handleSave() {
 
@@ -44,7 +44,8 @@ export function Skills(){
       date: firestore.FieldValue.serverTimestamp(),
       uidUser: user.uid,
       selectedAge: selectedAge,
-      questionsIds: allquestions 
+      questionsIds: allquestions,
+      idChild: child.childId 
     })
     .then(data =>{
       //toast de confirmação
@@ -133,13 +134,37 @@ export function Skills(){
 
   }, [selectedAge])
 
+  useFocusEffect(useCallback(()=>{
+    console.log('If de child', child.childId)
+    // verificar se criança foi preenchida, se não direciona para escolher
+    if (child.childId == null) {
+      console.log('If de child', child)
+      navigate('Cadastros')
+      //toast de confirmação
+      toast.show({
+        placement: "top",
+        render: () => {
+          return <Toast 
+            colorBg='success.400' 
+            title='Escolha uma criança' 
+            description={`Escolha uma criança antes de fazer o teste de habilidades`}
+            iconName='check-circle'
+          />
+        }
+      });
+    }
+
+    },[child])
+  )
+
+
   if(loading) {
     return <Load />
   }
 
   return(
     <>
-    <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
+    <Header /> 
     <Box>
         <Box background="secondary.200">  
           <Text 

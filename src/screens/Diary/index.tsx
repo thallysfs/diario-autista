@@ -135,7 +135,7 @@ export function Diary(){
   
   return(
     <>
-      <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
+      <Header /> 
 
       <Box background="secondary.200">  
         <Text 

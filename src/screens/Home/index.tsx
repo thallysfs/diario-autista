@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native'
 import axios from 'axios';
 //import XMLParser from 'react-xml-parser';
 
-//import {dados197} from '../../Utils/dados'
 import { InfoBox } from '../../components/InfoBox';
 import { Feather } from '@expo/vector-icons';
 
@@ -14,30 +13,34 @@ import Account from '../../assets/account.png'
 import Config from '../../assets/config.png'
 import Notebook from '../../assets/notebook.png'
 import Children from '../../assets/children.png'
-
 import { Header } from '../../components/Header';
+
+import {dados247} from '../../Utils/dados'
 
 export function Home(){
   const { navigate } = useNavigation()
   const { user } = useContext(UserContext)
   const [isProfessional, setIsProfessional] = useState(false)
 
-    // const m = dados197.split("|")
 
-    // console.log("My array", m)
+    function cadastraDados() {
+      const m = dados247.split("|")
 
-    // //salvar dados na tabela nova - apagar depois
-    // firestore()
-    //   .collection('skills')
-    //   .add({
-    //     ageMonth: m[1],
-    //     description: m[3],
-    //     id: m[0],
-    //     type: m[2]
-    //   })
-    //   .then(data =>{
-    //     console.log("ok")
-    //   })
+      console.log("My array", m)
+          //salvar dados na tabela nova - apagar depois
+    firestore()
+    .collection('skills')
+    .add({
+      ageMonth: m[1],
+      description: m[3],
+      id: m[0],
+      type: m[2]
+    })
+    .then(data =>{
+      console.log("ok")
+    })
+    }
+
 
     function checkIdProfessional() { 
         // ler da tabela user
@@ -72,11 +75,11 @@ export function Home(){
       //     console.log(xml);
       //   })
 
-      axios.get('https://www.canalautismo.com.br/categoria/noticia/feed')
-        .then(response => {
-          const json = new XMLParser().parseFromString(response.data)
-          //console.log(json)
-        })
+      // axios.get('https://www.canalautismo.com.br/categoria/noticia/feed')
+      //   .then(response => {
+      //     const json = new XMLParser().parseFromString(response.data)
+      //     //console.log(json)
+      //   })
 
 
     }
@@ -100,13 +103,14 @@ export function Home(){
     useEffect(()=>{
       //GetFeed()
       checkIdProfessional()
+      //cadastraDados()
 
     },[])
 
 
   return(
     <>
-    <Header avatar='http://github.com/thallysfs.png' name='Thallys'/> 
+    <Header /> 
     <Box marginBottom={280} flex={1}>
       <VStack space={3} alignItems="center" marginTop={5}>
         <InfoBox name='Seus dados' image={Account} alt='configurações da conta' redirect={onRedirectAccount} />
