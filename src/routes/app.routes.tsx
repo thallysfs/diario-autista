@@ -14,7 +14,7 @@ import { Header } from '../components/Header';
 import { Home } from '../screens/Home';
 import { Diary } from '../screens/Diary';
 import { Skills } from '../screens/Skills';
-import { Graphic } from '../screens/Graphic';
+import { Assessment } from '../screens/Assessment';
 import { EndSkill } from '../screens/EndSkill';
 import { Account } from '../screens/Account';
 import { Records } from '../screens/Records';
@@ -95,8 +95,8 @@ export function AppRoutes(){
                     }}
                 />            
                 <Screen 
-                    name="Gráfico"
-                    component={Graphic}
+                    name="Avaliações"
+                    component={Assessment}
                     options={{
                         tabBarLabelPosition: 'below-icon',
                         tabBarShowLabel: true,
@@ -107,7 +107,7 @@ export function AppRoutes(){
                             size={35}
                             color={color}
                         />,
-                        tabBarLabel:'Gráficos'
+                        tabBarLabel:'Avaliações'
                         
                     }}
                 />

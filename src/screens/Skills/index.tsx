@@ -4,6 +4,7 @@ import { Box, Text, VStack, ScrollView, Select, CheckIcon, HStack, useToast } fr
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 //chamar meu hook de Questions
 import { useQuestions } from '../../hooks/useQuestions'
+import { calcPercent } from '../../Utils/calcPercent'
 
 import { TestCard } from '../../components/TestCard'
 import { MyButton } from '../../components/MyButton';
@@ -34,6 +35,12 @@ export function Skills(){
 
   function handleSave() {
 
+    //calculando porcentagem
+    var percentSocial = calcPercent(idQs?.length, skillsQS.length)
+    var percentLanguage = calcPercent(idQl?.length, skillsQL.length)
+    var percentCognition = calcPercent(idQg?.length, skillsQG.length)
+    var percentMoviment = calcPercent(idQm?.length, skillsQM.length)
+   
     //concatenando array de questões
     var allquestions = idQs?.concat(idQl, idQg, idQm)
 
@@ -44,8 +51,15 @@ export function Skills(){
       date: firestore.FieldValue.serverTimestamp(),
       uidUser: user.uid,
       selectedAge: selectedAge,
-      questionsIds: allquestions,
-      idChild: child.childId 
+      idChild: child.childId,
+      percentSocial,
+      percentLanguage,
+      percentCognition,
+      percentMoviment,
+      questSocial: idQs,
+      questLanguage: idQl,
+      questCognition: idQg,
+      questMoviment: idQl,
     })
     .then(data =>{
       //toast de confirmação
@@ -127,7 +141,7 @@ export function Skills(){
       return skillQs.type === 'QM'
     })
 
-    console.log(skillsQG)
+    //console.log(skillsQG)
 
   useEffect(() => {
     handleLisGet()
@@ -135,10 +149,8 @@ export function Skills(){
   }, [selectedAge])
 
   useFocusEffect(useCallback(()=>{
-    console.log('If de child', child.childId)
     // verificar se criança foi preenchida, se não direciona para escolher
     if (child.childId == null) {
-      console.log('If de child', child)
       navigate('Cadastros')
       //toast de confirmação
       toast.show({

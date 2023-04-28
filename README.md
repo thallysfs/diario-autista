@@ -25,7 +25,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [TypeScript](https://www.typescriptlang.org/)
 - [Firebase](https://firebase.google.com/)
 
-## Em Desenvolvimento 57% concluído...
+## Em Desenvolvimento 78% concluído...
 
 ## Autor
   Thallys Freitas  <br/>
